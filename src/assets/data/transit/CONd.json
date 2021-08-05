@@ -1,5 +1,4 @@
-export class CON{
-public data = [
+[
   {
     "norma": "CON LSV",
     "articulo": "1 60",
@@ -97,4 +96,3 @@ public data = [
     "comentario": ""
   }
 ]
-}

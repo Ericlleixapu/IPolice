@@ -1,5 +1,4 @@
-export class CIR{
-public data = [
+[
   {
     "norma": "CIR LSV",
     "articulo": "2 9",
@@ -4753,4 +4752,3 @@ public data = [
     "comentario": ""
   }
 ]
-}
