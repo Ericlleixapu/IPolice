@@ -6,8 +6,25 @@
     <ion-title>Trafico</ion-title>
   </ion-toolbar>
 </ion-header>
-
+<ion-searchbar (ionChange)="searchChange($event)"></ion-searchbar>
 <ion-content>
-  <ion-searchbar (ionChange)="searchChange($event)"></ion-searchbar>
+  
+
+  <ion-list>
+    <ion-card *ngFor="let sancion of sancionesList">
+      <ion-card-header>
+        <ion-card-title>Norma: {{sancion.norma}} Articulo: {{sancion.articulo}}</ion-card-title>
+        <ion-card-subtitle>Apartado: {{sancion.apartado}} Opc: {{sancion.opc}}</ion-card-subtitle>
+      </ion-card-header>
+
+      <ion-item>
+      <ion-card-content>{{sancion.texto}}
+      </ion-card-content>
+    </ion-item>
+    <ion-item>
+      Precio: {{sancion.multa}} Puntos: {{sancion.puntos}}
+    </ion-item>
+    </ion-card>
+  </ion-list>
 
 </ion-content>

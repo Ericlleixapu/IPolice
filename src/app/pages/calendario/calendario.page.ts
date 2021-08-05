@@ -1,6 +1,7 @@
 import { Component, ViewChild, OnInit, Inject } from '@angular/core';
 import { CalendarComponent } from 'ionic2-calendar';
-import { AlertController, ModalController } from '@ionic/angular';
+import { AlertController, ToastController } from '@ionic/angular';
+import {Event} from "../../models/Event";
 
 @Component({
   selector: 'app-calendario',
@@ -23,8 +24,16 @@ export class CalendarioPage implements OnInit {
  
   constructor(
     private alertCtrl: AlertController,
-    private modalCtrl: ModalController
+    public toastController: ToastController
   ) {}
+
+  async presentToast() {
+    const toast = await this.toastController.create({
+      message: 'Your settings have been saved.',
+      duration: 1500
+    });
+    toast.present();
+  }
  
   ngOnInit() {}
  
@@ -102,9 +111,36 @@ export class CalendarioPage implements OnInit {
     }
     this.eventSource = events;
   }
- 
+  onEventSelected(event){
+    console.log(event);
+  }
+ public a = 0;
+ public events = [];
+  addEvent(){
+    let event = new Event();
+    let date = new Date();
+    event.title = "Nuevo Evento" + this.a++;
+    event.startTime = new Date(
+      date.getFullYear(),
+      date.getMonth(),
+      date.getDate(),0,0,0,0);
+    event.endTime = new Date(
+      date.getFullYear(),
+      date.getMonth(),
+      date.getDate(),23,59,59,0)
+      event.allDay = false;
+    
+      this.events.push(event);
+      this.eventSource = this.events;
+
+  }
+
   removeEvents() {
     this.eventSource = [];
+  }
+
+  console(content){
+    console.log(content);
   }
  
 }

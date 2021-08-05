@@ -44,12 +44,16 @@
  
   <ng-template #template let-view="view" let-row="row" let-col="col">
   <div [class.with-event]="view.dates[row*7+col].events.length">
-    {{view.dates[row*7+col].label}} <p style="margin: 0;">TN</p>
+    {{view.dates[row*7+col].label}} <p style="margin: 0;">TN</p> 
   </div>
 </ng-template>
 
+<!--<ng-template #template let-view="view" let-row="row" let-col="col">
+  {{view.dates[row*7+col].label}} <p style="margin: 0;">TN</p>
+</ng-template>-->
+
 <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-  <ion-fab-button (click)="createRandomEvents()">
+  <ion-fab-button (click)="addEvent();presentToast()">
     <ion-icon name="add"></ion-icon>
   </ion-fab-button>
 </ion-fab>

@@ -30,7 +30,6 @@ export class NotaService {
   saveNota(nota) {
     nota.id = Math.random();
     this.notas.push(nota);
-    console.log(this.notas);
   }
 
   updateNota(nota){
