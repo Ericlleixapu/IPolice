@@ -62,7 +62,7 @@
   {
     "norma": "CON LSV",
     "articulo": "10 78",
-    "apartado": -1,
+    "apartado": "-1",
     "opc": "5A",
     "puntos": "",
     "calificacion": "65,3",
@@ -85,8 +85,8 @@
   },
   {
     "norma": "CON",
-    "articulo": 25,
-    "apartado": 1,
+    "articulo": "25",
+    "apartado": "1",
     "opc": "5A",
     "puntos": "",
     "calificacion": "65.5.k)",

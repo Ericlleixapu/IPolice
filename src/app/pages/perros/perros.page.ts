@@ -18,7 +18,7 @@ export class PerrosPage implements OnInit {
   async info() {
     const toast = await this.toastController.create({
       message: 'Real Decreto 287/2002, de 22 de marzo, por el que se desarrolla la Ley 50/1999, de 23 de diciembre.',
-      duration: 2000
+      duration: 4000
     });
     toast.present();
   }

@@ -22,9 +22,18 @@
       </ion-card-content>
     </ion-item>
     <ion-item>
-      Precio: {{sancion.multa}} Puntos: {{sancion.puntos}}
+      Precio: {{sancion.multa}}€ | Reducido: {{sancion.reducido}}€ | Puntos: {{sancion.puntos}}
+      <ion-icon *ngIf="sancion.isSaved" slot="end" name="star" (click) = "removeSancion(sancion)"></ion-icon>
+      <ion-icon *ngIf="!sancion.isSaved" slot="end" name="star-outline" (click) = "saveSancion(sancion)"></ion-icon>
     </ion-item>
     </ion-card>
   </ion-list>
+
+  <ion-infinite-scroll *ngIf="!searching" threshold="100px" (ionInfinite)="scroll($event);">
+    <ion-infinite-scroll-content
+      loadingSpinner="bubbles"
+      loadingText="Loading more data...">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
 
 </ion-content>

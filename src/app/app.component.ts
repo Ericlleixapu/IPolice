@@ -7,11 +7,11 @@ import { Component } from '@angular/core';
 export class AppComponent {
   public appPages = [
     { title: 'Notas', url: '/notas', icon: 'create' },
-    { title: 'Calendario', url: '/calendario', icon: 'calendar' },
+    //{ title: 'Calendario', url: '/calendario', icon: 'calendar' },
     { title: 'Trafico', url: '/trafico', icon: 'car-sport' },
     //{ title: 'Seguridad ciudadana', url: '/seguridad', icon: 'body' },
-    { title: 'Perros', url: '/perros', icon: 'paw' },
-    { title: 'Marcadores', url: '/marks', icon: 'save' },
+    { title: 'Marcadores', url: '/marks', icon: 'star' },
+    { title: 'Perros', url: '/perros', icon: 'paw' },    
     //{ title: 'Documentación', url: '/docu', icon: 'id-card' },
     //{ title: 'Usuario', url: '/user', icon: 'person' },
   ];

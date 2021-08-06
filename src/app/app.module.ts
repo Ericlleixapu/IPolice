@@ -6,14 +6,18 @@ import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
-import { NotaService } from './services/nota.service';
-import { TraficoService } from './services/trafico.service';
 
 import { HttpClientModule } from '@angular/common/http';
 
 import { NgCalendarModule } from 'ionic2-calendar';
 import { registerLocaleData } from '@angular/common';
 import localeEs from '@angular/common/locales/es';
+
+import{IonicStorageModule} from'@ionic/storage-angular';
+
+import { NotaService } from './services/nota.service';
+import { TraficoService } from './services/trafico.service';
+
 registerLocaleData(localeEs);
 
 @NgModule({
@@ -24,7 +28,8 @@ registerLocaleData(localeEs);
     IonicModule.forRoot(), 
     AppRoutingModule, 
     NgCalendarModule,
-    HttpClientModule
+    HttpClientModule,
+    IonicStorageModule.forRoot()
   ],
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },

@@ -398,7 +398,7 @@
   {
     "norma": "CIR LSV",
     "articulo": "16 9",
-    "apartado": -1,
+    "apartado": "-1",
     "opc": "5A",
     "puntos": "-",
     "calificacion": "L",
@@ -662,7 +662,7 @@
   {
     "norma": "CIR LSV",
     "articulo": "21 12",
-    "apartado": 1,
+    "apartado": "1",
     "opc": "5B",
     "puntos": 6,
     "calificacion": "MG 65.5 d)",
@@ -806,7 +806,7 @@
   {
     "norma": "CIR LSV",
     "articulo": "31 14",
-    "apartado": 1,
+    "apartado": "1",
     "opc": "5A",
     "puntos": "-",
     "calificacion": "G 65.4 c)",
@@ -1670,7 +1670,7 @@
   {
     "norma": "CIR LSV",
     "articulo": "64 23",
-    "apartado": -5,
+    "apartado": "-5",
     "opc": "5B",
     "puntos": 4,
     "calificacion": "G 65.4 c)",
@@ -1682,7 +1682,7 @@
   {
     "norma": "CIR LSV",
     "articulo": "64 23",
-    "apartado": -5,
+    "apartado": "-5",
     "opc": "5C",
     "puntos": "-",
     "calificacion": "G 65.4 c)",
@@ -2018,7 +2018,7 @@
   {
     "norma": "CIR LSV",
     "articulo": "77 28",
-    "apartado": -3,
+    "apartado": "-3",
     "opc": "5A",
     "puntos": "-",
     "calificacion": "L",
@@ -2575,7 +2575,7 @@
     "puntos": 4,
     "calificacion": "G 65.4 c)",
     "texto": "Adelantar en túnel o tramo de vía afectado por la señal “Túnel” en el que sólo se disponga de un carril para el sentido de circulación  del  vehículo  que  pretende adelantar.",
-    "multa": 200.1,
+    "multa": "200 100",
     "responsable": "Conductor",
     "comentario": "Se ha considerado oportuno incluir  esta  conducta  entre  las merecedoras  de  detracción  de puntos, habida cuenta la “acumulación”   de   circunstancias peligrosas  que  caracterizan  la comisión de tal infracción."
   },
@@ -3794,7 +3794,7 @@
   {
     "norma": "CIR LSV",
     "articulo": "113 44",
-    "apartado": -4,
+    "apartado": "-4",
     "opc": "5A",
     "puntos": "-",
     "calificacion": "G 65.4 e)",
@@ -4058,7 +4058,7 @@
   {
     "norma": "CIR LSV",
     "articulo": "123 49",
-    "apartado": -2,
+    "apartado": "-2",
     "opc": "5A",
     "puntos": "-",
     "calificacion": "L",
@@ -4070,7 +4070,7 @@
   {
     "norma": "CIR LSV",
     "articulo": "123 49",
-    "apartado": -2,
+    "apartado": "-2",
     "opc": "5B",
     "puntos": "-",
     "calificacion": "L",
@@ -4262,7 +4262,7 @@
   {
     "norma": "CIR LSV",
     "articulo": "140 57",
-    "apartado": -3,
+    "apartado": "-3",
     "opc": "5A",
     "puntos": "-",
     "calificacion": "L",
@@ -4274,7 +4274,7 @@
   {
     "norma": "CIR LSV",
     "articulo": "140 57",
-    "apartado": -3,
+    "apartado": "-3",
     "opc": "5B",
     "puntos": "-",
     "calificacion": "L",
@@ -4286,7 +4286,7 @@
   {
     "norma": "CIR LSV",
     "articulo": "140 57",
-    "apartado": -3,
+    "apartado": "-3",
     "opc": "5C",
     "puntos": "-",
     "calificacion": "L",
@@ -4298,7 +4298,7 @@
   {
     "norma": "CIR LSV",
     "articulo": "141 57",
-    "apartado": -3,
+    "apartado": "-3",
     "opc": "5A",
     "puntos": "-",
     "calificacion": "L",
@@ -4358,7 +4358,7 @@
   {
     "norma": "CIR LSV",
     "articulo": "145 53",
-    "apartado": -1,
+    "apartado": "-1",
     "opc": "5A",
     "puntos": "-",
     "calificacion": "G 65.4 k)",
@@ -4370,7 +4370,7 @@
   {
     "norma": "CIR LSV",
     "articulo": "146 53",
-    "apartado": -1,
+    "apartado": "-1",
     "opc": "5A",
     "puntos": 4,
     "calificacion": "G 65.4 k)",
@@ -4382,7 +4382,7 @@
   {
     "norma": "CIR LSV",
     "articulo": "146 53",
-    "apartado": -1,
+    "apartado": "-1",
     "opc": "5B",
     "puntos": "-",
     "calificacion": "G 65.4 c)",
@@ -4394,7 +4394,7 @@
   {
     "norma": "CIR LSV",
     "articulo": "147 53",
-    "apartado": -1,
+    "apartado": "-1",
     "opc": "5A",
     "puntos": 4,
     "calificacion": "G 65.4 k)",
@@ -4406,7 +4406,7 @@
   {
     "norma": "CIR LSV",
     "articulo": "147 53",
-    "apartado": -1,
+    "apartado": "-1",
     "opc": "5B",
     "puntos": 4,
     "calificacion": "G 65.4 l)",
@@ -4442,7 +4442,7 @@
   {
     "norma": "CIR LSV",
     "articulo": "152 53",
-    "apartado": -1,
+    "apartado": "-1",
     "opc": "5A",
     "puntos": "-",
     "calificacion": "G 65.4 c)",
@@ -4454,7 +4454,7 @@
   {
     "norma": "CIR LSV",
     "articulo": "152 53",
-    "apartado": -1,
+    "apartado": "-1",
     "opc": "5B",
     "puntos": "-",
     "calificacion": "L",
@@ -4466,7 +4466,7 @@
   {
     "norma": "CIR LSV",
     "articulo": "152 53",
-    "apartado": -1,
+    "apartado": "-1",
     "opc": "5C",
     "puntos": "-",
     "calificacion": "L",
@@ -4478,7 +4478,7 @@
   {
     "norma": "CIR LSV",
     "articulo": "152 53",
-    "apartado": -1,
+    "apartado": "-1",
     "opc": "5D",
     "puntos": "-",
     "calificacion": "L",
@@ -4490,7 +4490,7 @@
   {
     "norma": "CIR LSV",
     "articulo": "153 53",
-    "apartado": -1,
+    "apartado": "-1",
     "opc": "5A",
     "puntos": "-",
     "calificacion": "L",
@@ -4502,7 +4502,7 @@
   {
     "norma": "CIR LSV",
     "articulo": "154 53",
-    "apartado": -1,
+    "apartado": "-1",
     "opc": "5A",
     "puntos": "-",
     "calificacion": "G 65.4 a) c) ñ)",
@@ -4514,7 +4514,7 @@
   {
     "norma": "CIR LSV",
     "articulo": "154 53",
-    "apartado": -1,
+    "apartado": "-1",
     "opc": "5B",
     "puntos": "-",
     "calificacion": "L",
@@ -4526,7 +4526,7 @@
   {
     "norma": "CIR LSV",
     "articulo": "155 53",
-    "apartado": -1,
+    "apartado": "-1",
     "opc": "5A",
     "puntos": "-",
     "calificacion": "G 65.4 c) e) h)",
@@ -4538,7 +4538,7 @@
   {
     "norma": "CIR LSV",
     "articulo": "155 53",
-    "apartado": -1,
+    "apartado": "-1",
     "opc": "5B",
     "puntos": "-",
     "calificacion": "L",
@@ -4550,7 +4550,7 @@
   {
     "norma": "CIR LSV",
     "articulo": "159 53",
-    "apartado": -1,
+    "apartado": "-1",
     "opc": "5A",
     "puntos": "-",
     "calificacion": "G 65.4 d)",
@@ -4562,7 +4562,7 @@
   {
     "norma": "CIR LSV",
     "articulo": "159 53",
-    "apartado": -1,
+    "apartado": "-1",
     "opc": "5B",
     "puntos": "-",
     "calificacion": "L",
@@ -4574,7 +4574,7 @@
   {
     "norma": "CIR LSV",
     "articulo": "159 53",
-    "apartado": -1,
+    "apartado": "-1",
     "opc": "5C",
     "puntos": "-",
     "calificacion": "L",
@@ -4586,7 +4586,7 @@
   {
     "norma": "CIR LSV",
     "articulo": "159 53",
-    "apartado": -1,
+    "apartado": "-1",
     "opc": "5D",
     "puntos": "-",
     "calificacion": "L",
@@ -4598,7 +4598,7 @@
   {
     "norma": "CIR LSV",
     "articulo": "159 53",
-    "apartado": -1,
+    "apartado": "-1",
     "opc": "5E",
     "puntos": "-",
     "calificacion": "L",
@@ -4610,7 +4610,7 @@
   {
     "norma": "CIR LSV",
     "articulo": "160 53",
-    "apartado": -1,
+    "apartado": "-1",
     "opc": "5A",
     "puntos": "-",
     "calificacion": "G 65.4 c)",
@@ -4622,7 +4622,7 @@
   {
     "norma": "CIR LSV",
     "articulo": "160 53",
-    "apartado": -1,
+    "apartado": "-1",
     "opc": "5B",
     "puntos": "-",
     "calificacion": "G 65.4 c)",
@@ -4634,7 +4634,7 @@
   {
     "norma": "CIR LSV",
     "articulo": "160 53",
-    "apartado": -1,
+    "apartado": "-1",
     "opc": "5C",
     "puntos": "-",
     "calificacion": "L",
@@ -4646,7 +4646,7 @@
   {
     "norma": "CIR LSV",
     "articulo": "167 53",
-    "apartado": -1,
+    "apartado": "-1",
     "opc": "5A",
     "puntos": "-",
     "calificacion": "G 65.4 c)",
@@ -4658,7 +4658,7 @@
   {
     "norma": "CIR LSV",
     "articulo": "167 53",
-    "apartado": -1,
+    "apartado": "-1",
     "opc": "5B",
     "puntos": "-",
     "calificacion": "G 65.4 c)",
@@ -4670,7 +4670,7 @@
   {
     "norma": "CIR LSV",
     "articulo": "168 53",
-    "apartado": -1,
+    "apartado": "-1",
     "opc": "5A",
     "puntos": "-",
     "calificacion": "G 65.4 c)",
@@ -4682,7 +4682,7 @@
   {
     "norma": "CIR LSV",
     "articulo": "169 53",
-    "apartado": -1,
+    "apartado": "-1",
     "opc": "5A",
     "puntos": 4,
     "calificacion": "G 65.4 l)",
@@ -4694,7 +4694,7 @@
   {
     "norma": "CIR LSV",
     "articulo": "169 53",
-    "apartado": -1,
+    "apartado": "-1",
     "opc": "5B",
     "puntos": 4,
     "calificacion": "G 65.4 l)",
@@ -4706,7 +4706,7 @@
   {
     "norma": "CIR LSV",
     "articulo": "170 53",
-    "apartado": -1,
+    "apartado": "-1",
     "opc": "5A",
     "puntos": "-",
     "calificacion": "G 65.4 c)",
@@ -4718,7 +4718,7 @@
   {
     "norma": "CIR LSV",
     "articulo": "170 53",
-    "apartado": -1,
+    "apartado": "-1",
     "opc": "5B",
     "puntos": "-",
     "calificacion": "L",
@@ -4730,7 +4730,7 @@
   {
     "norma": "CIR LSV",
     "articulo": "171 53",
-    "apartado": -1,
+    "apartado": "-1",
     "opc": "5A",
     "puntos": "-",
     "calificacion": "L",

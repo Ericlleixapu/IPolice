@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 
+import { TraficoService } from '../../services/trafico.service';
+import { SancionTrafico } from 'src/app/models/SancionTrafico';
+
 @Component({
   selector: 'app-marks',
   templateUrl: './marks.page.html',
@@ -7,9 +10,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MarksPage implements OnInit {
 
-  constructor() { }
+  public sancionesList: SancionTrafico[];
+
+  constructor(public TraficoService: TraficoService) { }
 
   ngOnInit() {
+    this.sancionesList = this.TraficoService.getSaved();
   }
-
+  removeSancion(sancion){
+    this.TraficoService.delete(sancion);
+  }
 }

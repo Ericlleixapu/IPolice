@@ -1,22 +1,15 @@
 import { Injectable } from '@angular/core';
-import { CON } from '../../assets/data/transit/CONd';
-import { CIR } from '../../assets/data/transit/CIR';
-
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
-import { catchError, retry } from 'rxjs/operators';
-
 import { SancionTrafico } from '../models/SancionTrafico';
+import {StorageService} from './storage.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TraficoService {
 
-  private conList = [];
-  private cirList = [];
-
   private fullList = [];
+  private saved = [];
 
 
   endPoint = 'http://localhost:8100';
@@ -26,72 +19,53 @@ export class TraficoService {
     })
   }  
 
-  constructor(public httpClient: HttpClient) {
-    let con = new CON();
-    let cir = new CIR();
-
-    this.conList = con.data;
-    this.cirList = cir.data;
-
-    this.mergeList();
-
-    let array:any = [];
-    this.load().subscribe((data: {}) => {
-      array = data;
-      console.log(array);
-    })
-
+  constructor(public httpClient: HttpClient,public storageService:StorageService) {
+  this.loadSaved();
+  this.getAll();
   }
 
-  load(): Observable<SancionTrafico> {
-    return this.httpClient.get<SancionTrafico>(this.endPoint + '/assets/data/transit/CONd.json')
-    .pipe(
-      retry(1),
-      catchError(this.httpError)
-    )
+  private async getCONList(){
+    const data = await this.httpClient.get<SancionTrafico[]>(this.endPoint + '/assets/data/transit/CONd.json', {observe: 'response'}).toPromise();
+    return data.body; 
+  }
+  private async getCIRList(){
+    const data = await this.httpClient.get<SancionTrafico[]>(this.endPoint + '/assets/data/transit/CIR.json', {observe: 'response'}).toPromise();
+    return data.body; 
+  }
+  private async getAll(){
+    let array = [];
+    let array2 = [];
+    array = await this.getCONList();
+    array2 = await this.getCIRList();    
+
+    this.fullList = this.repairList(array2.concat(array));
   }
 
-  httpError(error) {
-    let msg = '';
-    if(error.error instanceof ErrorEvent) {
-      // client side error
-      msg = error.error.message;
-    } else {
-      // server side error
-      msg = `Error Code: ${error.status}\nMessage: ${error.message}`;
-    }
-    console.log(msg);
-    return throwError(msg);
-  }
+  private repairList(list:SancionTrafico[]) {
 
-
-
-
-
-
-  private mergeList() {
-
-    this.fullList = this.cirList.concat(this.conList);
-
-    for (let sancion of this.fullList) {
+    for (let sancion of list) {
       sancion.norma = sancion.norma.split(" ")[0];
       sancion.articulo = sancion.articulo.split(" ")[0];
-      sancion.apartado = sancion.apartado.split(" ")[0];
-      sancion.multa = sancion.multa.split(" ")[0];
+      sancion.apartado = sancion.apartado.split(" ")[0];      
+      const aux = sancion.multa.split(" ")[0];
+      sancion.reducido = sancion.multa.split(" ")[1];
+      sancion.multa = aux;
       if (typeof sancion.puntos === 'string') sancion.puntos = 0;
+      if (this.saved.indexOf(sancion) > -1) sancion.isSaved=true;
     }
+    return list;
   }
 
-  getConList() {    
-    return this.conList;
-  }
-  getCirList() {
-    return this.cirList;
-  }
-  getAll() {
+  
+
+  public getFullList(){
     return this.fullList;
   }
-  getSearched(query) {
+  public getElements(initial, elements){
+    return this.fullList.slice(initial, elements);
+  }
+
+  public getSearched(query) {
     let array = [];
     for (let sancion of this.fullList) {
       if (sancion.texto.toUpperCase()
@@ -111,5 +85,25 @@ export class TraficoService {
       }
     }
     return array;
+  }
+
+  save(sancion:SancionTrafico){
+    this.fullList[this.fullList.indexOf(sancion)].isSaved = true;
+    this.saved.push(sancion);   
+    this.storageService.set("marks",this.saved); 
+  }
+  async loadSaved(){
+    this.saved = await this.storageService.get("marks"); 
+  }
+  getSaved(){
+    return this.saved;
+  }
+  delete(sancion:SancionTrafico){
+    this.fullList[this.fullList.indexOf(sancion)].isSaved = false;
+    let aux = this.saved.indexOf(sancion);
+    if(aux != null){
+      this.saved.splice(aux,1);
+    }   
+    this.storageService.set("marks",this.saved); 
   }
 }
