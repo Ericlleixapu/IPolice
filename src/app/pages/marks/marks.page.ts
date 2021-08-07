@@ -14,10 +14,17 @@ export class MarksPage implements OnInit {
 
   constructor(public TraficoService: TraficoService) { }
 
-  ngOnInit() {
+  async ngOnInit() {
+   await this.TraficoService.load();
+   this.getSaved();
+  }
+
+   getSaved(){
     this.sancionesList = this.TraficoService.getSaved();
   }
+  
   removeSancion(sancion){
     this.TraficoService.delete(sancion);
+    this.getSaved();
   }
 }

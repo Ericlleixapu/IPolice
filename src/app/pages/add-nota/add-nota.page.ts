@@ -48,7 +48,7 @@ public fecha;
   }
 
   updateNota(){
-    this.notaService.updateNota(this.nota);
+    this.notaService.updateNota();
     this.getBack();
   }
   deleteNota(){

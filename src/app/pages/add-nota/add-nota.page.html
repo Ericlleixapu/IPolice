@@ -5,7 +5,8 @@
       <ion-back-button (click)="getBack()"></ion-back-button>
     </ion-buttons>
 
-    <ion-title>Nueva nota</ion-title>
+    <ion-title *ngIf="!nota.id">Nueva nota</ion-title>
+    <ion-title *ngIf="nota.id">Editar nota</ion-title>
   </ion-toolbar>
 </ion-header>
 

@@ -1,5 +1,6 @@
 export class SancionTrafico{
 
+    public id:number;
     public norma:string;
     public articulo:string;
     public apartado:string;

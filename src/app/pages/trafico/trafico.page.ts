@@ -22,21 +22,20 @@ export class TraficoPage implements OnInit {
 
   constructor(public navCtrl: NavController, public TraficoService: TraficoService) { }
 
-  ngOnInit() {
-    this.uploadList();
-    if (this.sancionesList.length == 0) {
-      setTimeout(this.uploadList.bind(this), 500);
-    }
+   ngOnInit() {
+    this.loadList();
   }
 
   scroll(event){
     this.elements += 30;
-    this.uploadList();
+    this.loadList();
     event.target.complete();
   }
 
-  uploadList() {
-    this.sancionesList = this.TraficoService.getElements(this.initial,this.elements);
+  async loadList() {
+    await this.TraficoService.load();
+    const data = this.TraficoService.getElements(this.initial,this.elements);
+    this.sancionesList = data;
   }
 
   searchChange(event) {
@@ -47,7 +46,7 @@ export class TraficoPage implements OnInit {
     } else {
       this.searching =false;
       this.elements = 30;
-      this.uploadList();
+      this.loadList();
     }
     this.content.scrollToTop(1500);
   }

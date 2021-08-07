@@ -18,7 +18,8 @@ export class NotasPage implements OnInit {
 
   }
 
-  ngOnInit() {
+  async ngOnInit() {
+    await this.notaService.loadNotas();
     this.notas = this.notaService.getNotas();
   }
 
