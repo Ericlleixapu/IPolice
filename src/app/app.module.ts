@@ -21,7 +21,9 @@ import { TraficoService } from './services/trafico.service';
 registerLocaleData(localeEs);
 
 @NgModule({
-  declarations: [AppComponent],
+  declarations: [
+    AppComponent
+  ],
   entryComponents: [],
   imports: [
     BrowserModule, 

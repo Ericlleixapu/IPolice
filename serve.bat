@@ -1,1 +1,1 @@
-ionic serve
+start ionic serve

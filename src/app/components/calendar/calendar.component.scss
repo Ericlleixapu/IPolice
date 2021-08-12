@@ -1,0 +1,25 @@
+.disabled{
+    background-color: rgba(0, 0, 0, 0.062);
+    color:rgb(105, 105, 105);
+    filter: contrast(100%) brightness(90%);
+}
+.today{
+    background-color:rgb(172, 212, 219) ;
+    filter: contrast(110%) brightness(110%);
+}
+.selected{
+    background-color:rgb(160, 226, 164) ;
+    filter: contrast(120%) brightness(120%);
+}
+.TN{
+    background-color: palegreen ;
+}
+.TM{
+    background-color:paleturquoise ;
+}
+.TT{
+    background-color:palevioletred ;
+}
+.TD{
+    background-color:palegoldenrod ;
+}

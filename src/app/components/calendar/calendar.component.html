@@ -1,3 +1,66 @@
-<p>
-  calendar works!
-</p>
+<ion-content>
+
+  <ion-item>
+    <table style="width:100%">
+      <tr>
+        <th colspan="7">
+          <h1>{{calcMonth | date:'MMMM yyyy'}}</h1>
+        </th>
+      </tr>
+      <tr>
+        <th *ngFor="let cab of cabeceras">
+          <h1>{{cab}}</h1>
+        </th>
+      </tr>
+    </table>
+  </ion-item>
+
+  <ion-item-sliding #slidingItem>
+    <ion-item-options (ionSwipe)="prevMonth(slidingItem)" side="start">
+      <ion-item-option (click)="prevMonth(slidingItem)" color="White">
+        <ion-icon size="large" name="arrow-back"></ion-icon>
+      </ion-item-option>
+    </ion-item-options>
+
+    <ion-item>
+      <table style="width:100%">
+        <tr *ngFor="let week of weeks">
+          <td class="{{day.style}} {{day.selected}} {{day.turn.title}}" align="center" (click)=selectDay(day)
+            *ngFor="let day of month[week]">
+
+            <div style="
+            float:left;
+            padding: 5px; " *ngIf="day.events.length > 0">
+              <div style="
+            float:left;
+            border-radius: 5px;
+            padding: 5px; 
+            background-color: red;" *ngIf="day.events.length > 0">
+              </div>
+            </div>
+
+            <h1>{{day.day.getDate()}}
+            </h1>
+            <p>{{day.turn.title}}</p>
+          </td>
+        </tr>
+      </table>
+    </ion-item>
+
+    <ion-item-options (ionSwipe)="nextMonth(slidingItem)" side="end">
+      <ion-item-option (click)="nextMonth(slidingItem)" color="White">
+        <ion-icon size="large" name="arrow-forward"></ion-icon>
+      </ion-item-option>
+    </ion-item-options>
+  </ion-item-sliding>
+
+  <ion-list *ngIf="selected">
+    <div *ngIf="selected.events.length > 0">
+    <ion-list-header>Eventos</ion-list-header>
+    <ion-item *ngFor="let event of selected.events">
+      <ion-label>{{event.title}}</ion-label>
+      <ion-note slot="end">11</ion-note>
+    </ion-item>
+    </div>
+  </ion-list>
+</ion-content>
