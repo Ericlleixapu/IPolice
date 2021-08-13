@@ -2,12 +2,17 @@ export class Turn {
 
     public title: string;
     public days: number;
-    public color;
-    public style;
+    public color: string;
+    public startTime: string;
+    public finalTime: string;
+    public description:string;
 
-    constructor(title,days){
-        this.title = title;
-        this.days = days;
+    constructor(title?:string,days?:number,color?:string){
+
+        if(title){this.title = title;}
+        if(days){this.days = days;}
+        if(color){this.color = color;}
+        
     }
 
 }

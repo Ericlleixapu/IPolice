@@ -32,12 +32,33 @@ export class CalendarComponent implements OnInit {
   ngOnInit() {
 
     var turns = [];
-    turns.push(new Turn("F", 7));
-    turns.push(new Turn("TM", 7));
-    turns.push(new Turn("F", 7));
-    turns.push(new Turn("TT", 5));
-    turns.push(new Turn("F", 2));
-    turns.push(new Turn("TN", 7));
+    // turns.push(new Turn("TM", 5,"turquoise"));
+    // turns.push(new Turn("F", 2,"green"));
+    // turns.push(new Turn("TM", 5,"turquoise"));
+    // turns.push(new Turn("F", 2,"green"));
+    // turns.push(new Turn("TM", 5,"turquoise"));
+    // turns.push(new Turn("F", 2,"green"));
+    // turns.push(new Turn("TT", 5,"yellow"));
+    // turns.push(new Turn("F", 2,"green"));
+    // turns.push(new Turn("TT", 5,"yellow"));
+    // turns.push(new Turn("F", 2,"green"));
+    // turns.push(new Turn("TT", 5,"yellow"));
+    // turns.push(new Turn("F", 2,"green"));
+    // turns.push(new Turn("TN", 5,"pink"));
+    // turns.push(new Turn("F", 2,"green"));
+    // turns.push(new Turn("TN", 5,"pink"));
+    // turns.push(new Turn("F", 2,"green"));
+    // turns.push(new Turn("TN", 5,"pink"));
+    // turns.push(new Turn("F", 2,"green"));
+
+    turns.push(new Turn("F", 7,""));
+    turns.push(new Turn("TM", 5,"turquoise"));
+    turns.push(new Turn("M12", 2,"turquoise"));
+    turns.push(new Turn("F", 7,""));
+    turns.push(new Turn("TT", 5,"yellow"));
+    turns.push(new Turn("F", 2,""));
+    turns.push(new Turn("TN", 5,"pink"));    
+    turns.push(new Turn("N12", 2,"pink"));
 
     this.cuadrante = new Cuadrante(new Date('2021/7/12'), 35, turns);
 
@@ -55,8 +76,7 @@ export class CalendarComponent implements OnInit {
       this.selected.selected = "selected";
     }
   }
-  nextMonth(slidingItem) {
-    slidingItem.close();
+  nextMonth() {
 
     this.calcMonth = new Date(this.calcMonth.getFullYear(), this.calcMonth.getMonth() + 1, 1);
     this.month = this.monthCalculate(this.calcMonth.getFullYear(), this.calcMonth.getMonth() + 1,this.cuadrante);
@@ -64,8 +84,7 @@ export class CalendarComponent implements OnInit {
 
   }
 
-  prevMonth(slidingItem) {
-    slidingItem.close();
+  prevMonth() {
 
     this.calcMonth = new Date(this.calcMonth.getFullYear(), this.calcMonth.getMonth() - 1, 1);
     this.month = this.monthCalculate(this.calcMonth.getFullYear(), this.calcMonth.getMonth() + 1,this.cuadrante);
@@ -89,7 +108,7 @@ export class CalendarComponent implements OnInit {
       if (monthDays[j][k].day.getMonth() != month - 1) {
         monthDays[j][k].style = "disabled";
       }
-      if (monthDays[j][k].day.getDate() == 15) {
+      if (monthDays[j][k].day.getDate() == 28) {
         monthDays[j][k].events.push(new Event);
       }
       if (
@@ -111,14 +130,20 @@ export class CalendarComponent implements OnInit {
     return monthDays;
   }
   generateCuadranteDays(cuadrante, firstDay) {
-    const iterations = Math.trunc(62 / cuadrante.length) + 1;
-
+    const iterations = Math.trunc(84 / cuadrante.length) + 1;
     var newStart = new Date(cuadrante.startDay);
 
-    while(newStart > firstDay){
+    if(newStart < firstDay){
+      while(newStart <= firstDay){
+        newStart = new Date(newStart.getFullYear(),newStart.getMonth(),newStart.getDate() + cuadrante.length);
+      }
       newStart = new Date(newStart.getFullYear(),newStart.getMonth(),newStart.getDate() - cuadrante.length);
+    } else{
+      while(newStart > firstDay){
+        newStart = new Date(newStart.getFullYear(),newStart.getMonth(),newStart.getDate() - cuadrante.length);
+      }
     }
-    
+
     var index = 0;
     var days = [];
     for (let i = 0; i < iterations; i++) {

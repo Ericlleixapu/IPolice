@@ -11,15 +11,31 @@
     background-color:rgb(160, 226, 164) ;
     filter: contrast(120%) brightness(120%);
 }
-.TN{
+
+.dot-container{    
+    
+    position: relative;
+    left: 5px;
+    padding:10px;
+}
+.dot{
+    position: absolute;
+    top: 3px;
+    left:3px;
+    border-radius: 5px;
+    padding: 5px; 
+    background-color: red;
+}
+
+.green{
     background-color: palegreen ;
 }
-.TM{
+.turquoise{
     background-color:paleturquoise ;
 }
-.TT{
+.pink{
     background-color:palevioletred ;
 }
-.TD{
+.yellow{
     background-color:palegoldenrod ;
 }

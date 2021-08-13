@@ -6,9 +6,10 @@ export class Cuadrante {
     public turns: Array<Turn>;
     public startDay: Date;
     public length: number;
+    public isActive:boolean;
 
-    constructor(initialDate, days, turns) {
-        this.startDay = initialDate;
+    constructor(startDay, days, turns) {
+        this.startDay = startDay;
         this.length = days;
         this.turns = turns;
     }

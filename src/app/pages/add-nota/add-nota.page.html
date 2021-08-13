@@ -12,54 +12,51 @@
 
 <ion-content padding>
 
-  <ion-list>
-
-    <ion-card>
-      <ion-card-header>
-        <ion-card-title>
-          <ion-item>
-            <ion-label position="floating">Titulo</ion-label>
-            <ion-input [(ngModel)]="nota.titulo"></ion-input>
-          </ion-item>
-
-        </ion-card-title>
-      </ion-card-header>
-
-      <ion-card-content>
-
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>
         <ion-item>
-          <ion-label position="floating">Texto</ion-label>
-          <ion-textarea [(ngModel)]="nota.text" rows="6" cols="20"></ion-textarea>
+          <ion-label position="floating">Titulo</ion-label>
+          <ion-input [(ngModel)]="nota.titulo"></ion-input>
         </ion-item>
 
-        <ion-item>
-          <ion-label>Tipo</ion-label>
-          <ion-select [(ngModel)]="nota.type" interface="popover">
-            <ion-select-option value="nota">Nota</ion-select-option>
-            <ion-select-option value="juicio">Juicio</ion-select-option>
-          </ion-select>
-        </ion-item>
+      </ion-card-title>
+    </ion-card-header>
 
-        <ion-item *ngIf="nota.type == 'juicio'">
-          <ion-label position="floating">Fecha</ion-label>
-          <ion-datetime [(ngModel)]="fecha" (ionChange)="setFecha()" displayFormat="DD MMMM YYYY" min="2005" max="2060">
-          </ion-datetime>
-          <ion-label position="floating">Hora</ion-label>
-          <ion-datetime [(ngModel)]="fecha" (ionChange)="setFecha()" displayFormat="HH:mm" min="2005" max="2060">
-          </ion-datetime>
-        </ion-item>
+    <ion-card-content>
 
-        <ion-item *ngIf="nota.type == 'juicio'">
-          <ion-label>Pagado</ion-label>
-          <ion-checkbox [(ngModel)]="nota.pagado" color="primary" slot="start"></ion-checkbox>
-        </ion-item>
+      <ion-item>
+        <ion-label position="floating">Texto</ion-label>
+        <ion-textarea [(ngModel)]="nota.text" rows="6" cols="20"></ion-textarea>
+      </ion-item>
 
-        <ion-button *ngIf="!nota.id" color="primary" (click)="saveNota()">Guardar</ion-button>
-        <ion-button *ngIf="nota.id" color="primary" (click)="updateNota()">Actualizar</ion-button>
-        <ion-button *ngIf="nota.id" color="danger" (click)="deleteNota()">Eliminar</ion-button>
+      <ion-item>
+        <ion-label>Tipo</ion-label>
+        <ion-select [(ngModel)]="nota.type" interface="popover">
+          <ion-select-option value="nota">Nota</ion-select-option>
+          <ion-select-option value="juicio">Juicio</ion-select-option>
+        </ion-select>
+      </ion-item>
 
-      </ion-card-content>
-    </ion-card>
+      <ion-item *ngIf="nota.type == 'juicio'">
+        <ion-label position="floating">Fecha</ion-label>
+        <ion-datetime [(ngModel)]="fecha" (ionChange)="setFecha()" displayFormat="DD MMMM YYYY" min="2005" max="2060">
+        </ion-datetime>
+        <ion-label position="floating">Hora</ion-label>
+        <ion-datetime [(ngModel)]="fecha" (ionChange)="setFecha()" displayFormat="HH:mm" min="2005" max="2060">
+        </ion-datetime>
+      </ion-item>
 
-  </ion-list>
+      <ion-item *ngIf="nota.type == 'juicio'">
+        <ion-label>Pagado</ion-label>
+        <ion-checkbox [(ngModel)]="nota.pagado" color="primary" slot="start"></ion-checkbox>
+      </ion-item>
+
+      <ion-button *ngIf="!nota.id" color="primary" (click)="saveNota()">Guardar</ion-button>
+      <ion-button *ngIf="nota.id" color="primary" (click)="updateNota()">Actualizar</ion-button>
+      <ion-button *ngIf="nota.id" color="danger" (click)="deleteNota()">Eliminar</ion-button>
+
+    </ion-card-content>
+  </ion-card>
+
 </ion-content>

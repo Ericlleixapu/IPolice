@@ -1,0 +1,60 @@
+<ion-text>
+  <ion-item>
+    <h1>Turnos</h1>
+  </ion-item>
+</ion-text>
+
+<div *ngIf="!isNew">
+<ion-item-sliding *ngFor="let turn of turns">
+  <ion-item>
+    <ion-text>{{turn.title}} {{turn.startTime}} - {{turn.finalTime}}</ion-text>
+    <ion-chip slot="end" style="background-color: {{turn.color}};">
+      <ion-label>{{turn.color}}</ion-label>
+    </ion-chip>
+  </ion-item>
+  <ion-item-options side="end">
+    <!-- <ion-item-option (click)="clickEdit(turn)">
+      <ion-icon name="pencil" size="large"></ion-icon>
+    </ion-item-option> -->
+    <ion-item-option color="danger" (click)="clickDelete(turn)">
+      <ion-icon name="trash" size="large"></ion-icon>
+    </ion-item-option>
+  </ion-item-options>
+</ion-item-sliding>
+
+<ion-item (click)="addTurn();">
+  <ion-icon name="add"></ion-icon>
+  <ion-text> Añadir turno</ion-text>
+</ion-item>
+</div>
+
+
+<ion-card *ngIf="isNew">
+  <ion-card-content>
+    <ion-item>
+      <ion-input [(ngModel)]="newTurn.title" maxlength="1" maxlength="3" placeholder="Siglas (max 3)"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-input [(ngModel)]="newTurn.description" placeholder="Descripción (opcional)"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label>Hora inicio</ion-label>
+      <ion-datetime [(ngModel)]="startTime" displayFormat="HH:mm"></ion-datetime>
+    </ion-item>
+    <ion-item>
+      <ion-label>Hora fin</ion-label>
+      <ion-datetime [(ngModel)]="finalTime" displayFormat="HH:mm"></ion-datetime>
+    </ion-item>
+    <ion-item>
+      <ion-select [(ngModel)]="newTurn.color" interface="popover" placeholder="Color">
+        <ion-select-option value="">Sin Color</ion-select-option>
+        <ion-select-option value="palegreen">Verde</ion-select-option>
+        <ion-select-option value="palegoldenrod">Amarillo</ion-select-option>
+        <ion-select-option value="palevioletred">Rosa</ion-select-option>
+        <ion-select-option value="paleturquoise">Turquesa</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <ion-button color="primary" (click)="clickSave(newTurn)">Guardar</ion-button>
+    <ion-button color="danger" (click)="isNew=false;">Cancelar</ion-button>
+  </ion-card-content>
+</ion-card>

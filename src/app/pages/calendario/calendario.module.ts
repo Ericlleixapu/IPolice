@@ -8,7 +8,9 @@ import { CalendarioPageRoutingModule } from './calendario-routing.module';
 import { NgCalendarModule  } from 'ionic2-calendar';
 
 import { CalendarioPage } from './calendario.page';
-import {CalendarComponent} from '../../components/calendar/calendar.component'
+import {CalendarComponent} from '../../components/calendar/calendar.component';
+import {CuadranteComponent} from '../../components/cuadrante/cuadrante.component';
+import {TurnosComponent} from '../../components/turnos/turnos.component'
 
 @NgModule({
   imports: [
@@ -20,7 +22,9 @@ import {CalendarComponent} from '../../components/calendar/calendar.component'
   ],
   declarations: [
     CalendarioPage,
-    CalendarComponent
+    CalendarComponent,
+    CuadranteComponent,
+    TurnosComponent
   ]
 })
 export class CalendarioPageModule {}
