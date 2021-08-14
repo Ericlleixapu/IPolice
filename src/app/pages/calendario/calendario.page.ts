@@ -1,31 +1,21 @@
-import { Component, OnInit } from '@angular/core';
-import { ToastController } from '@ionic/angular';
-import {Event} from "../../models/Event";
+import { Component } from '@angular/core';
+import { CalendarService } from 'src/app/services/calendar.service';
 
 @Component({
   selector: 'app-calendario',
   templateUrl: './calendario.page.html',
   styleUrls: ['./calendario.page.scss'],
 })
-export class CalendarioPage implements OnInit {
- 
-  public calendario = true;
-  public cuadrante = false;
-  public turnos = false;
+export class CalendarioPage {
 
   constructor(
-    public toastController: ToastController
+    private calendarService:CalendarService
   ) {}
-
-  async presentToast() {
-    const toast = await this.toastController.create({
-      message: 'Your settings have been saved.',
-      duration: 1500
-    });
-    toast.present();
+ 
+  async ngOnInit() {
+    await this.calendarService.loadTurnList();
+    await this.calendarService.loadCuadranteList();
+    await this.calendarService.loadEventList();
+    this.calendarService.initialData();
   }
- 
-  ngOnInit() {}
- 
-  
 }

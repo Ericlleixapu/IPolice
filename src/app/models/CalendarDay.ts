@@ -6,6 +6,7 @@ export class CalendarDay {
     public selected:string = "";
     public style:string = "default";
     public eventsNum:number = 0;
+    public turnColor="";
     public turn;
 
     constructor(day:Date){

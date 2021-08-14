@@ -7,12 +7,15 @@ export class Turn {
     public finalTime: string;
     public description:string;
 
-    constructor(title?:string,days?:number,color?:string){
+    constructor(turn?:Turn,days?:number){
 
-        if(title){this.title = title;}
-        if(days){this.days = days;}
-        if(color){this.color = color;}
-        
+        if(turn){
+            this.title = turn.title;
+            this.days = days;
+            this.color = turn.color;
+            this.startTime = turn.startTime;
+            this.finalTime = turn.finalTime;
+            this.description = turn.description;
+        }
     }
-
 }

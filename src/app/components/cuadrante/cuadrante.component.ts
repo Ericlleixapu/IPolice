@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Turn } from 'src/app/models/Turn';
 import { Cuadrante } from 'src/app/models/Cuadrante';
+import { CalendarService } from 'src/app/services/calendar.service';
 
 @Component({
   selector: 'app-cuadrante',
@@ -9,37 +10,41 @@ import { Cuadrante } from 'src/app/models/Cuadrante';
 })
 export class CuadranteComponent implements OnInit {
 
-  public cuadrantes:Array<Cuadrante>;
+  public cuadrantes: Array<Cuadrante>;
+  public isNew = false;
+  public newCuadrante: Cuadrante;
 
-  constructor() { }
+  constructor(
+    private calendarService: CalendarService) { }
 
   ngOnInit() {
-
-    this.cuadrantes = [];
-    if(this.cuadrantes.length == 0){
-      var turns=[];
-      turns.push(new Turn("F", 7,""));
-      turns.push(new Turn("TM", 5,"turquoise"));
-      turns.push(new Turn("M12", 2,"turquoise"));
-      turns.push(new Turn("F", 7,""));
-      turns.push(new Turn("TT", 5,"yellow"));
-      turns.push(new Turn("F", 2,""));
-      turns.push(new Turn("TN", 5,"pink"));    
-      turns.push(new Turn("N12", 2,"pink"));
-  
-      this.cuadrantes.push(new Cuadrante(new Date('2021/7/12'), 35, turns));
-      this.cuadrantes[0].name = "Q5";
-
-    }
+    this.cuadrantes = this.calendarService.getCuadranteList();
   }
-  
-  addCuadrante(){
+
+  loadCuadranteList(event){
+    this.cuadrantes = this.calendarService.getCuadranteList();
+    event.target.complete();
+  }
+
+  addCuadrante() {
+    this.isNew = true;
 
   }
-  clickSave(){
+  clickSave() {
+    this.isNew = false;
 
   }
-  clickDelete(cuadrante){
+  clickDelete(cuadrante) {
+    this.calendarService.deleteCuadrante(cuadrante);
+  }
 
+  updateCuadrante() {
+    this.calendarService.updateCuadrante();
+  }
+
+  cuadranteActivation(cuadrante){
+    this.updateCuadrante();
+    if(!cuadrante.isActive) cuadrante = null;
+    this.calendarService.autoRefreshCalendar.next(cuadrante);
   }
 }

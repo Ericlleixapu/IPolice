@@ -1,16 +1,19 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CalendarDay } from '../../models/CalendarDay';
-import { Event } from '../../models/Event'
-import { Turn } from '../../models/Turn'
-import { Cuadrante } from '../../models/Cuadrante'
+import { Event } from '../../models/Event';
+import { Cuadrante } from '../../models/Cuadrante';
+import { CalendarService } from 'src/app/services/calendar.service';
+import { Turn } from 'src/app/models/Turn';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-calendar',
   templateUrl: './calendar.component.html',
   styleUrls: ['./calendar.component.scss'],
 })
-export class CalendarComponent implements OnInit {
+export class CalendarComponent implements OnInit, OnDestroy {
 
+  
   public cabeceras = ["L", "M", "X", "J", "V", "S", "D"];
   public month = Array.from(Array(6), () => new Array(7));
   public today = new Date();
@@ -22,49 +25,44 @@ export class CalendarComponent implements OnInit {
 
   public events: Array<Event> = [];
 
-  public cuadrante;
+  public cuadrante: Cuadrante = null;
   public diasCuadrante: [];
 
-  constructor() {
+  private suscripcion:Subscription;
 
+  constructor(public calendarService: CalendarService) {
+  }
+  
+  async loadData() {
+    await this.calendarService.loadCuadranteList()
+    this.calendarService.initialData();
+    this.cuadrante = this.calendarService.getActiveCuadrante();
+    this.calcMonth = this.today;
+    this.month = this.monthCalculate(this.calcMonth.getFullYear(), this.calcMonth.getMonth() + 1, this.cuadrante);
   }
 
   ngOnInit() {
 
-    var turns = [];
-    // turns.push(new Turn("TM", 5,"turquoise"));
-    // turns.push(new Turn("F", 2,"green"));
-    // turns.push(new Turn("TM", 5,"turquoise"));
-    // turns.push(new Turn("F", 2,"green"));
-    // turns.push(new Turn("TM", 5,"turquoise"));
-    // turns.push(new Turn("F", 2,"green"));
-    // turns.push(new Turn("TT", 5,"yellow"));
-    // turns.push(new Turn("F", 2,"green"));
-    // turns.push(new Turn("TT", 5,"yellow"));
-    // turns.push(new Turn("F", 2,"green"));
-    // turns.push(new Turn("TT", 5,"yellow"));
-    // turns.push(new Turn("F", 2,"green"));
-    // turns.push(new Turn("TN", 5,"pink"));
-    // turns.push(new Turn("F", 2,"green"));
-    // turns.push(new Turn("TN", 5,"pink"));
-    // turns.push(new Turn("F", 2,"green"));
-    // turns.push(new Turn("TN", 5,"pink"));
-    // turns.push(new Turn("F", 2,"green"));
-
-    turns.push(new Turn("F", 7,""));
-    turns.push(new Turn("TM", 5,"turquoise"));
-    turns.push(new Turn("M12", 2,"turquoise"));
-    turns.push(new Turn("F", 7,""));
-    turns.push(new Turn("TT", 5,"yellow"));
-    turns.push(new Turn("F", 2,""));
-    turns.push(new Turn("TN", 5,"pink"));    
-    turns.push(new Turn("N12", 2,"pink"));
-
-    this.cuadrante = new Cuadrante(new Date('2021/7/12'), 35, turns);
-
+    this.loadData();
     this.calcMonth = this.today;
-    this.month = this.monthCalculate(this.calcMonth.getFullYear(), this.calcMonth.getMonth() + 1,this.cuadrante);
+    this.month = this.monthCalculate(this.calcMonth.getFullYear(), this.calcMonth.getMonth() + 1, this.cuadrante);
 
+    this.suscripcion = this.calendarService.autoRefresh().subscribe(cuad => {
+      this.cuadrante = cuad;
+      this.month = this.monthCalculate(this.calcMonth.getFullYear(), this.calcMonth.getMonth() + 1, this.cuadrante);
+      console.log("holii");
+    });
+
+  }
+  ngOnDestroy(){
+    this.suscripcion.unsubscribe();
+  }
+
+  refreshCalendar(event) {
+    this.cuadrante = this.calendarService.getActiveCuadrante();
+    this.calcMonth = this.today;
+    this.month = this.monthCalculate(this.calcMonth.getFullYear(), this.calcMonth.getMonth() + 1, this.cuadrante);
+    event.target.complete();
   }
 
   selectDay(day) {
@@ -79,7 +77,7 @@ export class CalendarComponent implements OnInit {
   nextMonth() {
 
     this.calcMonth = new Date(this.calcMonth.getFullYear(), this.calcMonth.getMonth() + 1, 1);
-    this.month = this.monthCalculate(this.calcMonth.getFullYear(), this.calcMonth.getMonth() + 1,this.cuadrante);
+    this.month = this.monthCalculate(this.calcMonth.getFullYear(), this.calcMonth.getMonth() + 1, this.cuadrante);
 
 
   }
@@ -87,7 +85,7 @@ export class CalendarComponent implements OnInit {
   prevMonth() {
 
     this.calcMonth = new Date(this.calcMonth.getFullYear(), this.calcMonth.getMonth() - 1, 1);
-    this.month = this.monthCalculate(this.calcMonth.getFullYear(), this.calcMonth.getMonth() + 1,this.cuadrante);
+    this.month = this.monthCalculate(this.calcMonth.getFullYear(), this.calcMonth.getMonth() + 1, this.cuadrante);
 
   }
 
@@ -99,7 +97,11 @@ export class CalendarComponent implements OnInit {
     if (aux == -1) aux = 6;
     const firstDayOfWeek = new Date(year, month - 1, 1 - aux);
 
-    const turnDays = this.generateCuadranteDays(cuadrante, firstDayOfWeek);
+    var turnDays = [];
+
+    if (cuadrante != null) {
+      turnDays = this.generateCuadranteDays(cuadrante, firstDayOfWeek);
+    }
 
     var j = 0;
     var k = 0;
@@ -107,9 +109,6 @@ export class CalendarComponent implements OnInit {
       monthDays[j][k] = new CalendarDay(new Date(firstDayOfWeek.getFullYear(), firstDayOfWeek.getMonth(), firstDayOfWeek.getDate() + i));
       if (monthDays[j][k].day.getMonth() != month - 1) {
         monthDays[j][k].style = "disabled";
-      }
-      if (monthDays[j][k].day.getDate() == 28) {
-        monthDays[j][k].events.push(new Event);
       }
       if (
         monthDays[j][k].day.getFullYear() == this.today.getFullYear() &&
@@ -119,8 +118,12 @@ export class CalendarComponent implements OnInit {
         monthDays[j][k].style = "today";
       }
 
+      if (cuadrante != null) {
         monthDays[j][k].turn = turnDays[i].turn;
-      
+        monthDays[j][k].turnColor = turnDays[i].turn.color;
+      }
+
+
       k++;
       if (k == 7) {
         k = 0;
@@ -129,18 +132,19 @@ export class CalendarComponent implements OnInit {
     }
     return monthDays;
   }
+
   generateCuadranteDays(cuadrante, firstDay) {
     const iterations = Math.trunc(84 / cuadrante.length) + 1;
     var newStart = new Date(cuadrante.startDay);
 
-    if(newStart < firstDay){
-      while(newStart <= firstDay){
-        newStart = new Date(newStart.getFullYear(),newStart.getMonth(),newStart.getDate() + cuadrante.length);
+    if (newStart < firstDay) {
+      while (newStart <= firstDay) {
+        newStart = new Date(newStart.getFullYear(), newStart.getMonth(), newStart.getDate() + cuadrante.length);
       }
-      newStart = new Date(newStart.getFullYear(),newStart.getMonth(),newStart.getDate() - cuadrante.length);
-    } else{
-      while(newStart > firstDay){
-        newStart = new Date(newStart.getFullYear(),newStart.getMonth(),newStart.getDate() - cuadrante.length);
+      newStart = new Date(newStart.getFullYear(), newStart.getMonth(), newStart.getDate() - cuadrante.length);
+    } else {
+      while (newStart > firstDay) {
+        newStart = new Date(newStart.getFullYear(), newStart.getMonth(), newStart.getDate() - cuadrante.length);
       }
     }
 
@@ -148,8 +152,8 @@ export class CalendarComponent implements OnInit {
     var days = [];
     for (let i = 0; i < iterations; i++) {
       for (let turn of cuadrante.turns) {
-        for (let j = 0; j < turn.days; j++) {     
-          if(days.length == 42) return days;     
+        for (let j = 0; j < turn.days; j++) {
+          if (days.length == 42) return days;
           var date = new Date(newStart.getFullYear(), newStart.getMonth(), newStart.getDate() + index);
           if (date >= firstDay) {
             var day = new CalendarDay(date);

@@ -1,3 +1,17 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Calendario</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+
+  <ion-refresher slot="fixed" (ionRefresh)="refreshCalendar($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
 
   <ion-item>
     <table style="width:100%">
@@ -12,29 +26,27 @@
   <ion-item-sliding>
     <ion-item-options (ionSwipe)="prevMonth()" side="start">
     </ion-item-options>
-
     <ion-item>
       <table style="width:100%">
-      <tr>
-        <th style="margin:0;padding:0px;" *ngFor="let cab of cabeceras">
-          <h3>{{cab}}</h3>
-        </th>
-      </tr>
+        <tr>
+          <th style="margin:0;padding:0px;" *ngFor="let cab of cabeceras">
+            <h3>{{cab}}</h3>
+          </th>
+        </tr>
         <tr *ngFor="let week of weeks">
-          <td class="dot-container {{day.style}} {{day.selected}} {{day.turn.color}}" align="center"
+          <td class="dot-container {{day.style}} {{day.selected}} {{day.turnColor}}" align="center"
             (click)=selectDay(day) *ngFor="let day of month[week]">
-            
-              <div class="dot" *ngIf="day.events.length > 0">
-              </div>
+
+            <div class="dot" *ngIf="day.events.length > 0">
+            </div>
 
             <h3 style="margin:0;padding:0;">{{day.day.getDate()}}
             </h3>
-            <p style="margin:0;padding:0;font-size: smaller;">{{day.turn.title}}</p>
+            <p style="margin:0;padding:0;font-size: smaller;" *ngIf="day.turn">{{day.turn.title}}</p>
           </td>
         </tr>
       </table>
     </ion-item>
-
     <ion-item-options (ionSwipe)="nextMonth()" side="end">
     </ion-item-options>
   </ion-item-sliding>
@@ -49,4 +61,10 @@
     </div>
   </ion-list>
 
-  
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button (click)="addTurn();">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+</ion-content>

@@ -1,38 +1,45 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Calendario</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
 <ion-text>
   <ion-item>
     <h1>Turnos</h1>
   </ion-item>
 </ion-text>
 
-<div *ngIf="!isNew">
-<ion-item-sliding *ngFor="let turn of turns">
-  <ion-item>
-    <ion-text>{{turn.title}} {{turn.startTime}} - {{turn.finalTime}}</ion-text>
-    <ion-chip slot="end" style="background-color: {{turn.color}};">
-      <ion-label>{{turn.color}}</ion-label>
-    </ion-chip>
-  </ion-item>
-  <ion-item-options side="end">
-    <!-- <ion-item-option (click)="clickEdit(turn)">
-      <ion-icon name="pencil" size="large"></ion-icon>
-    </ion-item-option> -->
-    <ion-item-option color="danger" (click)="clickDelete(turn)">
-      <ion-icon name="trash" size="large"></ion-icon>
-    </ion-item-option>
-  </ion-item-options>
-</ion-item-sliding>
+<ion-refresher slot="fixed" (ionRefresh)="loadTurnList($event)">
+  <ion-refresher-content></ion-refresher-content>
+</ion-refresher>
 
-<ion-item (click)="addTurn();">
-  <ion-icon name="add"></ion-icon>
-  <ion-text> Añadir turno</ion-text>
-</ion-item>
-</div>
+<ion-list *ngIf="!isNew">
 
+    <ion-item-sliding *ngFor="let turn of turns">
+      <ion-item>
+        <ion-text>{{turn.title}} - de {{turn.startTime}} a {{turn.finalTime}}</ion-text>
+        <ion-chip slot="end" style="width: 6em;background-color: {{turn.color}};">
+          <ion-label style="width: 6em;text-align: center;">{{turn.color}}</ion-label>
+        </ion-chip>
+      </ion-item>
+      <ion-item-options side="end">
+        <ion-item-option color="danger" (click)="clickDelete(turn)">
+          <ion-icon name="trash" size="large"></ion-icon>
+        </ion-item-option>
+      </ion-item-options>
+    </ion-item-sliding>
+    
+</ion-list>
 
 <ion-card *ngIf="isNew">
   <ion-card-content>
     <ion-item>
-      <ion-input [(ngModel)]="newTurn.title" maxlength="1" maxlength="3" placeholder="Siglas (max 3)"></ion-input>
+      <ion-input [(ngModel)]="newTurn.title" minlength="1" maxlength="3" placeholder="Siglas (max 3)"></ion-input>
     </ion-item>
     <ion-item>
       <ion-input [(ngModel)]="newTurn.description" placeholder="Descripción (opcional)"></ion-input>
@@ -58,3 +65,11 @@
     <ion-button color="danger" (click)="isNew=false;">Cancelar</ion-button>
   </ion-card-content>
 </ion-card>
+
+<ion-fab vertical="bottom" horizontal="end" slot="fixed">
+  <ion-fab-button (click)="addEvent();">
+    <ion-icon name="add"></ion-icon>
+  </ion-fab-button>
+</ion-fab>
+
+</ion-content>

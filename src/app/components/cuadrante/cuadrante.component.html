@@ -1,34 +1,56 @@
-<ion-text>
-  <ion-item>
-    <h1>Cuadrantes</h1>
-  </ion-item>
-</ion-text>
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Calendario</ion-title>
+  </ion-toolbar>
+</ion-header>
 
-<div *ngIf="!isNew">
-<ion-item-sliding *ngFor="let cuadrante of cuadrantes">
-  <ion-item>
-    <ion-text>{{cuadrante.name}} con dia de inicio: {{cuadrante.startDay | date: 'dd/MM/yyyy'}} </ion-text><ion-toggle slot="end"></ion-toggle>
-  </ion-item>
-  <ion-item-options side="end">
-    <!-- <ion-item-option (click)="clickEdit(turn)">
+<ion-content>
+  <ion-text>
+    <ion-item>
+      <h1>Cuadrantes</h1>
+    </ion-item>
+  </ion-text>
+
+  <ion-refresher slot="fixed" (ionRefresh)="loadCuadranteList($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <ion-list *ngIf="!isNew">
+    <ion-item-sliding *ngFor="let cuadrante of cuadrantes">
+      <ion-item>
+        <ion-text>{{cuadrante.name}} con dia de inicio: {{cuadrante.startDay | date: 'dd/MM/yyyy'}} </ion-text>
+        <ion-toggle slot="end" [(ngModel)]="cuadrante.isActive" (ionChange)=cuadranteActivation(cuadrante);>
+        </ion-toggle>
+      </ion-item>
+      <ion-item-options side="end">
+        <!-- <ion-item-option (click)="clickEdit(turn)">
       <ion-icon name="pencil" size="large"></ion-icon>
     </ion-item-option> -->
-    <ion-item-option color="danger" (click)="clickDelete(cuadrante)">
-      <ion-icon name="trash" size="large"></ion-icon>
-    </ion-item-option>
-  </ion-item-options>
-</ion-item-sliding>
+        <ion-item-option color="danger" (click)="clickDelete(cuadrante)">
+          <ion-icon name="trash" size="large"></ion-icon>
+        </ion-item-option>
+      </ion-item-options>
+    </ion-item-sliding>
+  </ion-list>
 
-<ion-item (click)="addCuadrante();">
-  <ion-icon name="add"></ion-icon>
-  <ion-text> Añadir cuadrante</ion-text>
-</ion-item>
-</div>
+  <ion-card *ngIf="isNew">
+    <ion-card-content>
+      <ion-item>
+        <ion-input [(ngModel)]="newCuadrante.name" placeholder="Nombre"></ion-input>
+      </ion-item>
 
-<ion-card *ngIf="isNew">
-  <ion-card-content>
+      <ion-button color="primary" (click)="clickSave()">Guardar</ion-button>
+      <ion-button color="danger" (click)="isNew=false;">Cancelar</ion-button>
+    </ion-card-content>
+  </ion-card>
 
-    <ion-button color="primary" (click)="clickSave()">Guardar</ion-button>
-    <ion-button color="danger" (click)="isNew=false;">Cancelar</ion-button>
-  </ion-card-content>
-</ion-card>
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button (click)="addCuadrante();">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+</ion-content>
