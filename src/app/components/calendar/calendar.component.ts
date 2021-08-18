@@ -50,7 +50,6 @@ export class CalendarComponent implements OnInit, OnDestroy {
     this.suscripcion = this.calendarService.autoRefresh().subscribe(cuad => {
       this.cuadrante = cuad;
       this.month = this.monthCalculate(this.calcMonth.getFullYear(), this.calcMonth.getMonth() + 1, this.cuadrante);
-      console.log("holii");
     });
 
   }

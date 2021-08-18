@@ -16,13 +16,13 @@ export class CalendarService {
   private turnList: Array<Turn>;
   private eventList: Array<Event>;
 
-  public autoRefreshCalendar:Subject<Cuadrante> = new Subject();
+  public autoRefreshCalendar: Subject<Cuadrante> = new Subject();
 
   constructor(private storage: Storage) {
 
   }
 
-  autoRefresh():Observable<Cuadrante>{
+  autoRefresh(): Observable<Cuadrante> {
     return this.autoRefreshCalendar.asObservable();
   }
   //GESTION DE CUADRANTES
@@ -35,6 +35,7 @@ export class CalendarService {
     }
   }
   saveCuadrante(cuadrante) {
+    cuadrante.id = Date.now();
     this.cuadranteList.push(cuadrante);
     this.storage.set("cuadrantes", this.cuadranteList);
   }
@@ -51,14 +52,32 @@ export class CalendarService {
     }
     this.storage.set("cuadrantes", this.cuadranteList);
   }
-  getActiveCuadrante(){
-    if(this.cuadranteList.length > 0){
-    for(let cuadrante of this.cuadranteList){
-      if(cuadrante.isActive) return cuadrante;
+  getActiveCuadrante() {
+    if (this.cuadranteList.length > 0) {
+      for (let cuadrante of this.cuadranteList) {
+        if (cuadrante.isActive) return cuadrante;
+      }
     }
-  }
     return null;
   }
+
+  setNewActiveCuadrante(cuadrante) {
+    for (let cuad of this.cuadranteList) {
+      if (cuadrante.id == cuad.id) {
+        cuad.isActive = cuadrante.isActive;
+      } else {
+        cuad.isActive = false;
+      }
+    }
+    this.updateCuadrante();
+    if (cuadrante.isActive) {
+      this.autoRefreshCalendar.next(cuadrante);
+    } else {
+      this.autoRefreshCalendar.next(null);
+    }
+
+  }
+
   //GESTION DE TURNOS
   async loadTurnList() {
     const data = await this.storage.get("turns");
@@ -165,16 +184,17 @@ export class CalendarService {
 
     if (this.cuadranteList.length == 0) {
       var turns = [];
-      turns.push(new Turn(this.turnList[1],5));
-      turns.push(new Turn(this.turnList[2],2));
-      turns.push(new Turn(this.turnList[0],7));
-      turns.push(new Turn(this.turnList[3],5));
-      turns.push(new Turn(this.turnList[0],2));
-      turns.push(new Turn(this.turnList[4],5));
-      turns.push(new Turn(this.turnList[5],2));
-      turns.push(new Turn(this.turnList[0],7));
+      turns.push(new Turn(this.turnList[1], 5));
+      turns.push(new Turn(this.turnList[2], 2));
+      turns.push(new Turn(this.turnList[0], 7));
+      turns.push(new Turn(this.turnList[3], 5));
+      turns.push(new Turn(this.turnList[0], 2));
+      turns.push(new Turn(this.turnList[4], 5));
+      turns.push(new Turn(this.turnList[5], 2));
+      turns.push(new Turn(this.turnList[0], 7));
 
       this.cuadranteList.push(new Cuadrante(new Date('2021/7/19'), 35, turns));
+      this.cuadranteList[0].id = Date.now();
       this.cuadranteList[0].name = "Q5";
       this.cuadranteList[0].isActive = false;
       this.storage.set("cuadrantes", this.cuadranteList);
