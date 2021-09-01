@@ -61,16 +61,16 @@ export class CalendarService {
     return null;
   }
 
-  setNewActiveCuadrante(cuadrante) {
+  setNewActiveCuadrante(cuadrante: Cuadrante) {
+    const isActive = cuadrante.isActive;
+
     for (let cuad of this.cuadranteList) {
-      if (cuadrante.id == cuad.id) {
-        cuad.isActive = cuadrante.isActive;
-      } else {
-        cuad.isActive = false;
-      }
+      cuad.isActive = false;
     }
+    
+    cuadrante.isActive = isActive;
     this.updateCuadrante();
-    if (cuadrante.isActive) {
+    if (isActive) {
       this.autoRefreshCalendar.next(cuadrante);
     } else {
       this.autoRefreshCalendar.next(null);
@@ -131,9 +131,6 @@ export class CalendarService {
     this.storage.set("events", this.eventList);
   }
 
-
-
-
   //DATOS INICIALES APP
   initialData() {
     if (this.turnList.length == 0) {
@@ -146,35 +143,35 @@ export class CalendarService {
       this.turnList.push(aux);
       aux = new Turn();
       aux.title = "TM";
-      aux.color = "turquoise";
+      aux.color = "paleturquoise";
       aux.description = "Turno de mañana";
       aux.startTime = "6:0";
       aux.finalTime = "14:0";
       this.turnList.push(aux);
       aux = new Turn();
       aux.title = "M12";
-      aux.color = "turquoise";
+      aux.color = "paleturquoise";
       aux.description = "Turno de mañana 12H";
       aux.startTime = "06:0";
       aux.finalTime = "18:0";
       this.turnList.push(aux);
       aux = new Turn();
       aux.title = "TT";
-      aux.color = "yellow";
+      aux.color = "palegoldenrod";
       aux.description = "Turno de Tarde";
       aux.startTime = "14:0";
       aux.finalTime = "22:0";
       this.turnList.push(aux);
       aux = new Turn();
       aux.title = "TN";
-      aux.color = "pink";
+      aux.color = "palevioletred";
       aux.description = "Turno de Noche";
       aux.startTime = "22:0";
       aux.finalTime = "6:0";
       this.turnList.push(aux);
       aux = new Turn();
       aux.title = "N12";
-      aux.color = "pink";
+      aux.color = "palevioletred";
       aux.description = "Turno de noche 12H";
       aux.startTime = "18:0";
       aux.finalTime = "6:0";
@@ -198,31 +195,6 @@ export class CalendarService {
       this.cuadranteList[0].name = "Q5";
       this.cuadranteList[0].isActive = false;
       this.storage.set("cuadrantes", this.cuadranteList);
-
-      // turns = [];
-      // turns.push(new Turn("TM", 5, "turquoise"));
-      // turns.push(new Turn("F", 2, "green"));
-      // turns.push(new Turn("TM", 5, "turquoise"));
-      // turns.push(new Turn("F", 2, "green"));
-      // turns.push(new Turn("TM", 5, "turquoise"));
-      // turns.push(new Turn("F", 2, "green"));
-      // turns.push(new Turn("TT", 5, "yellow"));
-      // turns.push(new Turn("F", 2, "green"));
-      // turns.push(new Turn("TT", 5, "yellow"));
-      // turns.push(new Turn("F", 2, "green"));
-      // turns.push(new Turn("TT", 5, "yellow"));
-      // turns.push(new Turn("F", 2, "green"));
-      // turns.push(new Turn("TN", 5, "pink"));
-      // turns.push(new Turn("F", 2, "green"));
-      // turns.push(new Turn("TN", 5, "pink"));
-      // turns.push(new Turn("F", 2, "green"));
-      // turns.push(new Turn("TN", 5, "pink"));
-      // turns.push(new Turn("F", 2, "green"));
-
-      // this.cuadranteList.push(new Cuadrante(new Date('2021/7/19'), 63, turns));
-      // this.cuadranteList[1].name = "SEAT";
-
-      // this.storage.set("cuadrantes", this.cuadranteList);
 
     }
 

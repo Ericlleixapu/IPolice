@@ -3,7 +3,6 @@ import { CalendarDay } from '../../models/CalendarDay';
 import { Event } from '../../models/Event';
 import { Cuadrante } from '../../models/Cuadrante';
 import { CalendarService } from 'src/app/services/calendar.service';
-import { Turn } from 'src/app/models/Turn';
 import { Subscription } from 'rxjs';
 
 @Component({
@@ -13,7 +12,7 @@ import { Subscription } from 'rxjs';
 })
 export class CalendarComponent implements OnInit, OnDestroy {
 
-  
+
   public cabeceras = ["L", "M", "X", "J", "V", "S", "D"];
   public month = Array.from(Array(6), () => new Array(7));
   public today = new Date();
@@ -28,21 +27,21 @@ export class CalendarComponent implements OnInit, OnDestroy {
   public cuadrante: Cuadrante = null;
   public diasCuadrante: [];
 
-  private suscripcion:Subscription;
+  private suscripcion: Subscription;
 
   constructor(public calendarService: CalendarService) {
   }
-  
+
   async loadData() {
     await this.calendarService.loadCuadranteList()
     this.calendarService.initialData();
     this.cuadrante = this.calendarService.getActiveCuadrante();
     this.calcMonth = this.today;
     this.month = this.monthCalculate(this.calcMonth.getFullYear(), this.calcMonth.getMonth() + 1, this.cuadrante);
+    this.events = this.calendarService.getEventList();
   }
 
   ngOnInit() {
-
     this.loadData();
     this.calcMonth = this.today;
     this.month = this.monthCalculate(this.calcMonth.getFullYear(), this.calcMonth.getMonth() + 1, this.cuadrante);
@@ -53,7 +52,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
     });
 
   }
-  ngOnDestroy(){
+  ngOnDestroy() {
     this.suscripcion.unsubscribe();
   }
 
@@ -73,19 +72,20 @@ export class CalendarComponent implements OnInit, OnDestroy {
       this.selected.selected = "selected";
     }
   }
-  nextMonth() {
 
+  nextMonth() {
     this.calcMonth = new Date(this.calcMonth.getFullYear(), this.calcMonth.getMonth() + 1, 1);
     this.month = this.monthCalculate(this.calcMonth.getFullYear(), this.calcMonth.getMonth() + 1, this.cuadrante);
-
 
   }
 
   prevMonth() {
-
     this.calcMonth = new Date(this.calcMonth.getFullYear(), this.calcMonth.getMonth() - 1, 1);
     this.month = this.monthCalculate(this.calcMonth.getFullYear(), this.calcMonth.getMonth() + 1, this.cuadrante);
+  }
 
+  newEvent() {
+//TODO
   }
 
   monthCalculate(year, month, cuadrante) {
@@ -115,13 +115,13 @@ export class CalendarComponent implements OnInit, OnDestroy {
         monthDays[j][k].day.getDate() == this.today.getDate()
       ) {
         monthDays[j][k].style = "today";
+        this.selected = monthDays[j][k];
       }
 
       if (cuadrante != null) {
         monthDays[j][k].turn = turnDays[i].turn;
         monthDays[j][k].turnColor = turnDays[i].turn.color;
       }
-
 
       k++;
       if (k == 7) {

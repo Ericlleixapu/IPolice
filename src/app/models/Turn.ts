@@ -1,11 +1,11 @@
 export class Turn {
 
-    public title: string;
+    public title: string = "";
     public days: number;
-    public color: string;
+    public color: string = "Sin Color";
     public startTime: string;
     public finalTime: string;
-    public description:string;
+    public description:string = "";
 
     constructor(turn?:Turn,days?:number){
 

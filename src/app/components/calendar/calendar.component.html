@@ -29,12 +29,12 @@
     <ion-item>
       <table style="width:100%">
         <tr>
-          <th style="margin:0;padding:0px;" *ngFor="let cab of cabeceras">
+          <th style="margin:0;padding:0px;text-align: center;" *ngFor="let cab of cabeceras">
             <h3>{{cab}}</h3>
           </th>
         </tr>
         <tr *ngFor="let week of weeks">
-          <td class="dot-container {{day.style}} {{day.selected}} {{day.turnColor}}" align="center"
+          <td class="dot-container {{day.style}} {{day.selected}}" style ="text-align: center;" [ngStyle]="{'background-color':day.turn.color}"
             (click)=selectDay(day) *ngFor="let day of month[week]">
 
             <div class="dot" *ngIf="day.events.length > 0">
@@ -52,6 +52,13 @@
   </ion-item-sliding>
 
   <ion-list *ngIf="selected">
+    <div *ngIf="selected.turn.title != ''">
+      <ion-list-header>Turno</ion-list-header>
+      <ion-item>
+        <ion-label>{{selected.turn.description}}</ion-label>
+        <ion-note slot="end">{{selected.turn.startTime}} - {{selected.turn.finalTime}}</ion-note>
+      </ion-item>
+    </div>
     <div *ngIf="selected.events.length > 0">
       <ion-list-header>Eventos</ion-list-header>
       <ion-item *ngFor="let event of selected.events">
@@ -59,10 +66,13 @@
         <ion-note slot="end">11</ion-note>
       </ion-item>
     </div>
+    <div *ngIf="selected.events.length > 0">
+      <ion-list-header>No hay eventos</ion-list-header>
+    </div>
   </ion-list>
 
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-    <ion-fab-button (click)="addTurn();">
+    <ion-fab-button (click)="newEvent();">
       <ion-icon name="add"></ion-icon>
     </ion-fab-button>
   </ion-fab>

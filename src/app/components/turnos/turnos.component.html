@@ -8,23 +8,23 @@
 </ion-header>
 
 <ion-content>
-<ion-text>
-  <ion-item>
-    <h1>Turnos</h1>
-  </ion-item>
-</ion-text>
+  <ion-text>
+    <ion-item>
+      <h1>Turnos</h1>
+    </ion-item>
+  </ion-text>
 
-<ion-refresher slot="fixed" (ionRefresh)="loadTurnList($event)">
-  <ion-refresher-content></ion-refresher-content>
-</ion-refresher>
+  <ion-refresher slot="fixed" (ionRefresh)="loadTurnList($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
 
-<ion-list *ngIf="!isNew">
+  <ion-list *ngIf="!isNew">
 
     <ion-item-sliding *ngFor="let turn of turns">
       <ion-item>
         <ion-text>{{turn.title}} - de {{turn.startTime}} a {{turn.finalTime}}</ion-text>
-        <ion-chip slot="end" style="width: 6em;background-color: {{turn.color}};">
-          <ion-label style="width: 6em;text-align: center;">{{turn.color}}</ion-label>
+        <ion-chip slot="end" style="width: 4em;" [ngStyle]="{'background-color': turn.color}">
+          <ion-label style="width: 4em;text-align: center;"></ion-label>
         </ion-chip>
       </ion-item>
       <ion-item-options side="end">
@@ -33,43 +33,48 @@
         </ion-item-option>
       </ion-item-options>
     </ion-item-sliding>
-    
-</ion-list>
 
-<ion-card *ngIf="isNew">
-  <ion-card-content>
-    <ion-item>
-      <ion-input [(ngModel)]="newTurn.title" minlength="1" maxlength="3" placeholder="Siglas (max 3)"></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-input [(ngModel)]="newTurn.description" placeholder="Descripción (opcional)"></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-label>Hora inicio</ion-label>
-      <ion-datetime [(ngModel)]="startTime" displayFormat="HH:mm"></ion-datetime>
-    </ion-item>
-    <ion-item>
-      <ion-label>Hora fin</ion-label>
-      <ion-datetime [(ngModel)]="finalTime" displayFormat="HH:mm"></ion-datetime>
-    </ion-item>
-    <ion-item>
-      <ion-select [(ngModel)]="newTurn.color" interface="popover" placeholder="Color">
-        <ion-select-option value="">Sin Color</ion-select-option>
-        <ion-select-option value="palegreen">Verde</ion-select-option>
-        <ion-select-option value="palegoldenrod">Amarillo</ion-select-option>
-        <ion-select-option value="palevioletred">Rosa</ion-select-option>
-        <ion-select-option value="paleturquoise">Turquesa</ion-select-option>
-      </ion-select>
-    </ion-item>
-    <ion-button color="primary" (click)="clickSave(newTurn)">Guardar</ion-button>
-    <ion-button color="danger" (click)="isNew=false;">Cancelar</ion-button>
-  </ion-card-content>
-</ion-card>
+  </ion-list>
 
-<ion-fab vertical="bottom" horizontal="end" slot="fixed">
-  <ion-fab-button (click)="addTurn();">
-    <ion-icon name="add"></ion-icon>
-  </ion-fab-button>
-</ion-fab>
+  <ion-card *ngIf="isNew">
+    <ion-card-header>
+      <ion-card-title>Crear turno</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <ion-item>
+        <ion-input (ionChange)="formControl();" [(ngModel)]="newTurn.title" minlength="1" maxlength="3"
+          placeholder="Siglas (max 3)"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-input (ionChange)="formControl();" [(ngModel)]="newTurn.description" placeholder="Descripción">
+        </ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label>Hora inicio</ion-label>
+        <ion-datetime (ionChange)="formControl();" [(ngModel)]="startTime" displayFormat="HH:mm"></ion-datetime>
+      </ion-item>
+      <ion-item>
+        <ion-label>Hora fin</ion-label>
+        <ion-datetime (ionChange)="formControl();" [(ngModel)]="finalTime" displayFormat="HH:mm"></ion-datetime>
+      </ion-item>
+      <ion-item>
+        <ion-select (ionChange)="formControl();" [(ngModel)]="newTurn.color" interface="popover" placeholder="Color">
+          <ion-select-option value="">Sin Color</ion-select-option>
+          <ion-select-option value="palegreen">Verde</ion-select-option>
+          <ion-select-option value="palegoldenrod">Amarillo</ion-select-option>
+          <ion-select-option value="palevioletred">Rosa</ion-select-option>
+          <ion-select-option value="paleturquoise">Turquesa</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-button color="primary" [disabled]="!formOk" (click)="clickSave(newTurn)">Guardar</ion-button>
+      <ion-button color="danger" (click)="isNew=false;">Cancelar</ion-button>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed">
+    <ion-fab-button (click)="addTurn();">
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 
 </ion-content>

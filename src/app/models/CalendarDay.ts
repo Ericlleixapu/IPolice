@@ -1,4 +1,5 @@
 import {Event} from './Event';
+import { Turn } from './Turn';
 
 export class CalendarDay {
     public day: Date;
@@ -7,7 +8,7 @@ export class CalendarDay {
     public style:string = "default";
     public eventsNum:number = 0;
     public turnColor="";
-    public turn;
+    public turn:Turn = new Turn();
 
     constructor(day:Date){
         this.day = day;
