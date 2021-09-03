@@ -13,8 +13,6 @@ export class TurnosComponent implements OnInit {
   public isEdit:boolean = false;
   public turns: Array<Turn>;
   public newTurn: Turn;
-  public startTime = null;
-  public finalTime = null;
   public formOk:boolean = false;
 
   constructor(private calendarService: CalendarService) { }
@@ -36,16 +34,7 @@ export class TurnosComponent implements OnInit {
   clickSave(turn) {
     this.isNew = false;
 
-    var aux = new Date(this.startTime);
-    turn.startTime = aux.getHours() + ":" + aux.getMinutes()
-
-    aux = new Date(this.finalTime);
-    turn.finalTime = aux.getHours() + ":" + aux.getMinutes()
-
     this.calendarService.saveTurn(turn);
-
-    this.startTime = null;
-    this.finalTime = null;
   }
 
   clickDelete(turn) {
@@ -65,10 +54,10 @@ export class TurnosComponent implements OnInit {
     if(this.newTurn.description == ""){
       this.formOk = false;
     }
-    if(this.startTime == null){
+    if(this.newTurn.startTime == null){
       this.formOk = false;
     }
-    if(this.finalTime == null){
+    if(this.newTurn.finalTime == null){
       this.formOk = false;
     }
     

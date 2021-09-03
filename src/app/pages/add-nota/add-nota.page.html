@@ -2,7 +2,7 @@
   <ion-toolbar>
 
     <ion-buttons slot="start">
-      <ion-back-button (click)="getBack()"></ion-back-button>
+      <ion-back-button></ion-back-button>
     </ion-buttons>
 
     <ion-title *ngIf="!nota.id">Nueva nota</ion-title>
@@ -30,7 +30,7 @@
         <ion-textarea [(ngModel)]="nota.text" rows="6" cols="20"></ion-textarea>
       </ion-item>
 
-      <ion-item>
+      <!-- <ion-item>
         <ion-label>Tipo</ion-label>
         <ion-select [(ngModel)]="nota.type" interface="popover">
           <ion-select-option value="nota">Nota</ion-select-option>
@@ -50,7 +50,7 @@
       <ion-item *ngIf="nota.type == 'juicio'">
         <ion-label>Pagado</ion-label>
         <ion-checkbox [(ngModel)]="nota.pagado" color="primary" slot="start"></ion-checkbox>
-      </ion-item>
+      </ion-item> -->
 
       <ion-button *ngIf="!nota.id" color="primary" (click)="saveNota()">Guardar</ion-button>
       <ion-button *ngIf="nota.id" color="primary" (click)="updateNota()">Actualizar</ion-button>

@@ -3,8 +3,8 @@ export class Turn {
     public title: string = "";
     public days: number;
     public color: string = "Sin Color";
-    public startTime: string;
-    public finalTime: string;
+    public startTime: string = "00:00";
+    public finalTime: string = "00:00";
     public description:string = "";
 
     constructor(turn?:Turn,days?:number){

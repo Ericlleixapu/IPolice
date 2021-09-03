@@ -23,7 +23,7 @@
     </table>
   </ion-item>
 
-  <ion-item-sliding>
+  <ion-item-sliding *ngIf="month[0][0] != null">
     <ion-item-options (ionSwipe)="prevMonth()" side="start">
     </ion-item-options>
     <ion-item>
@@ -34,8 +34,8 @@
           </th>
         </tr>
         <tr *ngFor="let week of weeks">
-          <td class="dot-container {{day.style}} {{day.selected}}" style ="text-align: center;" [ngStyle]="{'background-color':day.turn.color}"
-            (click)=selectDay(day) *ngFor="let day of month[week]">
+          <td class="dot-container {{day.style}} {{day.selected}}" style="text-align: center;"
+            [ngStyle]="{'background-color':day.turn.color}" (click)=selectDay(day) *ngFor="let day of month[week]">
 
             <div class="dot" *ngIf="day.events.length > 0">
             </div>
@@ -53,20 +53,40 @@
 
   <ion-list *ngIf="selected">
     <div *ngIf="selected.turn.title != ''">
-      <ion-list-header>Turno</ion-list-header>
       <ion-item>
-        <ion-label>{{selected.turn.description}}</ion-label>
-        <ion-note slot="end">{{selected.turn.startTime}} - {{selected.turn.finalTime}}</ion-note>
+        <ion-text>{{selected.turn.description}}</ion-text>
+        <ion-text slot="end">{{selected.turn.startTime}} - {{selected.turn.finalTime}}</ion-text>
       </ion-item>
     </div>
     <div *ngIf="selected.events.length > 0">
       <ion-list-header>Eventos</ion-list-header>
-      <ion-item *ngFor="let event of selected.events">
+
+      <ion-item-sliding *ngFor="let event of selected.events">
+        <ion-item-options side="start">          
+          <ion-item-option color="danger" (click)="deleteEvent(event)">
+            <ion-icon name="trash" size="large"></ion-icon>
+          </ion-item-option>
+          <ion-item-option color="primary" (click)="editEvent(event)">
+            <ion-icon name="pencil" size="large"></ion-icon>
+          </ion-item-option>
+        </ion-item-options>
+      <ion-item>
         <ion-label>{{event.title}}</ion-label>
-        <ion-note slot="end">11</ion-note>
+        <ion-text slot="end">{{event.startTime}} - {{event.finalTime}}</ion-text>
       </ion-item>
+      <ion-item-options side="end">
+        <ion-item-option color="primary" (click)="editEvent(event)">
+          <ion-icon name="pencil" size="large"></ion-icon>
+        </ion-item-option>
+        <ion-item-option color="danger" (click)="deleteEvent(event)">
+          <ion-icon name="trash" size="large"></ion-icon>
+        </ion-item-option>
+      </ion-item-options>
+      </ion-item-sliding>
+
+
     </div>
-    <div *ngIf="selected.events.length > 0">
+    <div *ngIf="selected.events.length < 0">
       <ion-list-header>No hay eventos</ion-list-header>
     </div>
   </ion-list>

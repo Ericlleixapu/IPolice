@@ -11,20 +11,16 @@ const routes: Routes = [
     path: '',
     component: CalendarioPage,
     children: [
-      { path: 'tab1', component: CalendarComponent },
-      { path: 'tab2', component: CuadranteComponent },
-      { path: 'tab3', component: TurnosComponent },
+      { path: 'calendar', component: CalendarComponent },
+      { path: 'cuadrantes', component: CuadranteComponent },
+      { path: 'turnos', component: TurnosComponent },
+      
       {
         path: '',
-        redirectTo: '/calendario/tab1',
+        redirectTo: '/calendario/calendar',
         pathMatch: 'full'
       }
     ]
-  },
-  {
-    path: '',
-    redirectTo: '/calendario/tab1',
-    pathMatch: 'full'
   }
 ];
 

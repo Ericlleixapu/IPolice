@@ -4,6 +4,7 @@ import { Event } from '../../models/Event';
 import { Cuadrante } from '../../models/Cuadrante';
 import { CalendarService } from 'src/app/services/calendar.service';
 import { Subscription } from 'rxjs';
+import { NavController } from '@ionic/angular';
 
 @Component({
   selector: 'app-calendar',
@@ -22,43 +23,46 @@ export class CalendarComponent implements OnInit, OnDestroy {
 
   public selected: CalendarDay;
 
-  public events: Array<Event> = [];
+  public events: Map<string,Array<Event>> = new Map<string,Array<Event>>();
 
   public cuadrante: Cuadrante = null;
   public diasCuadrante: [];
 
   private suscripcion: Subscription;
 
-  constructor(public calendarService: CalendarService) {
+  constructor(
+    private navCtrl:NavController,
+    public calendarService: CalendarService
+    ) {
+      
   }
 
-  async loadData() {
-    await this.calendarService.loadCuadranteList()
-    this.calendarService.initialData();
-    this.cuadrante = this.calendarService.getActiveCuadrante();
-    this.calcMonth = this.today;
-    this.month = this.monthCalculate(this.calcMonth.getFullYear(), this.calcMonth.getMonth() + 1, this.cuadrante);
-    this.events = this.calendarService.getEventList();
-  }
-
-  ngOnInit() {
-    this.loadData();
-    this.calcMonth = this.today;
-    this.month = this.monthCalculate(this.calcMonth.getFullYear(), this.calcMonth.getMonth() + 1, this.cuadrante);
-
+  async ngOnInit() {
+    await this.loadData();
+        
     this.suscripcion = this.calendarService.autoRefresh().subscribe(cuad => {
       this.cuadrante = cuad;
       this.month = this.monthCalculate(this.calcMonth.getFullYear(), this.calcMonth.getMonth() + 1, this.cuadrante);
     });
 
+    
+    this.calcMonth = this.today;
+    this.month = this.monthCalculate(this.calcMonth.getFullYear(), this.calcMonth.getMonth() + 1, this.cuadrante);
   }
+
   ngOnDestroy() {
     this.suscripcion.unsubscribe();
   }
 
-  refreshCalendar(event) {
-    this.cuadrante = this.calendarService.getActiveCuadrante();
-    this.calcMonth = this.today;
+  async loadData() {
+    await this.calendarService.loadCuadranteList();
+    await this.calendarService.loadEventMap();
+    this.cuadrante = this.calendarService.getActiveCuadrante();    
+    this.events = this.calendarService.getEventMap();    
+  }
+
+  async refreshCalendar(event) {
+    await this.loadData();
     this.month = this.monthCalculate(this.calcMonth.getFullYear(), this.calcMonth.getMonth() + 1, this.cuadrante);
     event.target.complete();
   }
@@ -70,7 +74,9 @@ export class CalendarComponent implements OnInit, OnDestroy {
       }
       this.selected = day;
       this.selected.selected = "selected";
+      this.calendarService.selectedDay = day;
     }
+
   }
 
   nextMonth() {
@@ -85,7 +91,14 @@ export class CalendarComponent implements OnInit, OnDestroy {
   }
 
   newEvent() {
-//TODO
+    this.navCtrl.navigateForward('/add-event');
+  }
+  editEvent(editEvent){
+    this.calendarService.setEditEvent(editEvent);
+    this.navCtrl.navigateForward('/add-event');
+  }
+  deleteEvent(delEvent) {
+    this.calendarService.deleteEvent(delEvent);
   }
 
   monthCalculate(year, month, cuadrante) {
@@ -106,9 +119,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
     var k = 0;
     for (let i = 0; i < 42; i++) {
       monthDays[j][k] = new CalendarDay(new Date(firstDayOfWeek.getFullYear(), firstDayOfWeek.getMonth(), firstDayOfWeek.getDate() + i));
-      if (monthDays[j][k].day.getMonth() != month - 1) {
-        monthDays[j][k].style = "disabled";
-      }
+      
       if (
         monthDays[j][k].day.getFullYear() == this.today.getFullYear() &&
         monthDays[j][k].day.getMonth() == this.today.getMonth() &&
@@ -116,11 +127,27 @@ export class CalendarComponent implements OnInit, OnDestroy {
       ) {
         monthDays[j][k].style = "today";
         this.selected = monthDays[j][k];
+        this.calendarService.selectedDay = this.selected;
+      }
+
+      if (monthDays[j][k].day.getMonth() != month - 1) {
+        monthDays[j][k].style = "disabled";
       }
 
       if (cuadrante != null) {
         monthDays[j][k].turn = turnDays[i].turn;
-        monthDays[j][k].turnColor = turnDays[i].turn.color;
+      }
+
+      const dayEvent = new Date(monthDays[j][k].day.getFullYear(),monthDays[j][k].day.getMonth(),monthDays[j][k].day.getDate()).toString();
+      monthDays[j][k].events = this.events.get(dayEvent);
+      if(monthDays[j][k].events == null){
+        monthDays[j][k].events = new Array<Event>();
+      }else{
+        for(let event of monthDays[j][k].events){
+          if(event.turn != null){
+            monthDays[j][k].turn = event.turn;
+          }
+        }
       }
 
       k++;

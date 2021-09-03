@@ -15,7 +15,7 @@ export class CalendarioPage {
   async ngOnInit() {
     await this.calendarService.loadTurnList();
     await this.calendarService.loadCuadranteList();
-    await this.calendarService.loadEventList();
+    await this.calendarService.loadEventMap();
     this.calendarService.initialData();
   }
 }

@@ -5,6 +5,7 @@ import { Turn } from '../models/Turn';
 
 import { Storage } from '@ionic/storage-angular';
 import { Observable, Subject } from 'rxjs';
+import { CalendarDay } from '../models/CalendarDay';
 
 @Injectable({
   providedIn: 'root'
@@ -14,7 +15,9 @@ export class CalendarService {
   private activeCuadrante: Cuadrante;
   private cuadranteList: Array<Cuadrante>;
   private turnList: Array<Turn>;
-  private eventList: Array<Event>;
+  private eventMap: Map<string, Array<Event>>;
+  public selectedDay: CalendarDay;
+  private editEvent: Event = null;
 
   public autoRefreshCalendar: Subject<Cuadrante> = new Subject();
 
@@ -67,7 +70,7 @@ export class CalendarService {
     for (let cuad of this.cuadranteList) {
       cuad.isActive = false;
     }
-    
+
     cuadrante.isActive = isActive;
     this.updateCuadrante();
     if (isActive) {
@@ -104,31 +107,49 @@ export class CalendarService {
     }
     this.storage.set("turns", this.turnList);
   }
+
   //GESTION DE EVENTOS
-  async loadEventList() {
+  async loadEventMap() {
     const data = await this.storage.get("events");
     if (data == null) {
-      this.eventList = [];
+      this.eventMap = new Map<string, Array<Event>>();
     } else {
-      this.eventList = data;
+      this.eventMap = data;
     }
   }
-  saveEvent(event) {
-    this.eventList.push(event);
-    this.storage.set("events", this.turnList);
+  saveEvent(event: Event) {
+    let eventsDay = this.eventMap.get(event.day.toString());
+    if (eventsDay == null) {
+      let aux = [];
+      aux.push(event);
+      this.eventMap.set(event.day.toString(), aux)
+      this.storage.set("events", this.eventMap);
+    } else {
+      eventsDay.push(event);
+      this.storage.set("events", this.eventMap);
+    }
   }
-  getEventList() {
-    return this.eventList;
+  getEventMap() {
+    return this.eventMap;
   }
   updateEvent() {
-    this.storage.set("events", this.eventList);
+    this.storage.set("events", this.eventMap);
   }
-  deleteEvent(event) {
-    let aux = this.eventList.indexOf(event);
+  deleteEvent(event: Event) {
+    let eventsDay = this.eventMap.get(event.day.toString());
+    let aux = eventsDay.indexOf(event);
     if (aux != null) {
-      this.eventList.splice(aux, 1);
+      eventsDay.splice(aux, 1);
     }
-    this.storage.set("events", this.eventList);
+    this.storage.set("events", this.eventMap);
+  }
+  setEditEvent(editEvent) {
+    this.editEvent = editEvent;
+  }
+  getEditEvent(): Event {
+    let aux = this.editEvent;
+    this.editEvent = null;
+    return aux;
   }
 
   //DATOS INICIALES APP
@@ -138,43 +159,43 @@ export class CalendarService {
       aux.title = "F";
       aux.color = "Sin Color";
       aux.description = "Fiesta";
-      aux.startTime = "0:0";
+      aux.startTime = "00:00";
       aux.finalTime = "23:59";
       this.turnList.push(aux);
       aux = new Turn();
       aux.title = "TM";
       aux.color = "paleturquoise";
       aux.description = "Turno de mañana";
-      aux.startTime = "6:0";
-      aux.finalTime = "14:0";
+      aux.startTime = "06:00";
+      aux.finalTime = "14:00";
       this.turnList.push(aux);
       aux = new Turn();
       aux.title = "M12";
       aux.color = "paleturquoise";
       aux.description = "Turno de mañana 12H";
-      aux.startTime = "06:0";
-      aux.finalTime = "18:0";
+      aux.startTime = "06:00";
+      aux.finalTime = "18:00";
       this.turnList.push(aux);
       aux = new Turn();
       aux.title = "TT";
       aux.color = "palegoldenrod";
       aux.description = "Turno de Tarde";
-      aux.startTime = "14:0";
-      aux.finalTime = "22:0";
+      aux.startTime = "14:00";
+      aux.finalTime = "22:00";
       this.turnList.push(aux);
       aux = new Turn();
       aux.title = "TN";
       aux.color = "palevioletred";
       aux.description = "Turno de Noche";
-      aux.startTime = "22:0";
-      aux.finalTime = "6:0";
+      aux.startTime = "22:00";
+      aux.finalTime = "06:0";
       this.turnList.push(aux);
       aux = new Turn();
       aux.title = "N12";
       aux.color = "palevioletred";
       aux.description = "Turno de noche 12H";
-      aux.startTime = "18:0";
-      aux.finalTime = "6:0";
+      aux.startTime = "18:00";
+      aux.finalTime = "06:00";
       this.turnList.push(aux);
       this.storage.set("turns", this.turnList);
     }

@@ -11,7 +11,7 @@ import { TurnosComponent } from '../turnos/turnos.component';
 })
 export class CuadranteComponent implements OnInit {
 
-  public cuadrantes: Array<Cuadrante>;
+  public cuadrantes: Array<Cuadrante> = new Array<Cuadrante>();
   public isNew = false;
   public isEdit = false;
   public newCuadrante: Cuadrante;

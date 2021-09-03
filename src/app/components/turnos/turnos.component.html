@@ -51,11 +51,11 @@
       </ion-item>
       <ion-item>
         <ion-label>Hora inicio</ion-label>
-        <ion-datetime (ionChange)="formControl();" [(ngModel)]="startTime" displayFormat="HH:mm"></ion-datetime>
+        <ion-datetime (ionChange)="formControl();" [(ngModel)]="newTurn.startTime" displayFormat="HH:mm"></ion-datetime>
       </ion-item>
       <ion-item>
         <ion-label>Hora fin</ion-label>
-        <ion-datetime (ionChange)="formControl();" [(ngModel)]="finalTime" displayFormat="HH:mm"></ion-datetime>
+        <ion-datetime (ionChange)="formControl();" [(ngModel)]="newTurn.finalTime" displayFormat="HH:mm"></ion-datetime>
       </ion-item>
       <ion-item>
         <ion-select (ionChange)="formControl();" [(ngModel)]="newTurn.color" interface="popover" placeholder="Color">
