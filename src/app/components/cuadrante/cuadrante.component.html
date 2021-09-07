@@ -26,7 +26,7 @@
         </ion-toggle>
       </ion-item>
       <ion-item-options side="end">
-        <ion-item-option color="primary" (click)="clickEdit(cuadrante)">
+        <ion-item-option *ngIf="!cuadrante.isActive" color="primary" (click)="clickEdit(cuadrante)">
           <ion-icon name="pencil" size="large"></ion-icon>
         </ion-item-option>
         <ion-item-option color="danger" (click)="clickDelete(cuadrante)">
@@ -54,12 +54,14 @@
       <!-- turnos -->
       <ion-list>
         <ion-item>
-          <ion-label ><ion-card-subtitle>Turnos</ion-card-subtitle></ion-label>
+          <ion-label>
+            <ion-card-subtitle>Turnos</ion-card-subtitle>
+          </ion-label>
         </ion-item>
         <ion-reorder-group disabled="{{isAddTurn}}" (ionItemReorder)="reorderItems($event)">
           <ion-item-sliding *ngFor="let turn of newCuadrante.turns">
             <ion-item [disabled]="isAddTurn">
-              <h6>{{turn.title}} de {{turn.startTime}} a {{turn.finalTime}} {{turn.days}} dias</h6>              
+              <h6>{{turn.title}} de {{turn.startTime}} a {{turn.finalTime}} {{turn.days}} dias</h6>
               <ion-chip slot="end" style="width: 4em;" [ngStyle]="{'background-color': turn.color}">
                 <ion-label style="width: 4em;text-align: center;"></ion-label>
               </ion-chip>
@@ -78,8 +80,10 @@
             <ion-label>Turno: </ion-label>
             <ion-select [(ngModel)]="turn" (ionChange)="formTurnControl();" interface="popover"
               placeholder="Escoje un turno">
-              <ion-select-option *ngFor="let turn of turns" [value]="turn">{{turn.title}} {{turn.startTime}} -
-                {{turn.finalTime}}</ion-select-option>
+              <ng-container *ngFor="let turn of turns">
+                <ion-select-option *ngIf="!turn.isHidden" [value]="turn">{{turn.title}} {{turn.startTime}} -
+                  {{turn.finalTime}}</ion-select-option>
+              </ng-container>
             </ion-select>
           </ion-item>
           <ion-item>

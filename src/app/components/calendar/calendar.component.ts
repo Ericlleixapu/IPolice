@@ -13,7 +13,6 @@ import { NavController } from '@ionic/angular';
 })
 export class CalendarComponent implements OnInit, OnDestroy {
 
-
   public cabeceras = ["L", "M", "X", "J", "V", "S", "D"];
   public month = Array.from(Array(6), () => new Array(7));
   public today = new Date();
@@ -23,7 +22,9 @@ export class CalendarComponent implements OnInit, OnDestroy {
 
   public selected: CalendarDay;
 
-  public events: Map<string,Array<Event>> = new Map<string,Array<Event>>();
+  public eventType = "";
+
+  public events: Map<string, Array<Event>> = new Map<string, Array<Event>>();
 
   public cuadrante: Cuadrante = null;
   public diasCuadrante: [];
@@ -31,21 +32,22 @@ export class CalendarComponent implements OnInit, OnDestroy {
   private suscripcion: Subscription;
 
   constructor(
-    private navCtrl:NavController,
+    private navCtrl: NavController,
     public calendarService: CalendarService
-    ) {
-      
+  ) {
+
   }
 
   async ngOnInit() {
     await this.loadData();
-        
-    this.suscripcion = this.calendarService.autoRefresh().subscribe(cuad => {
-      this.cuadrante = cuad;
+
+    this.suscripcion = this.calendarService.autoRefresh().subscribe(() => {
+      this.cuadrante = this.calendarService.getActiveCuadrante();
+      this.events = this.calendarService.getEventMap();
       this.month = this.monthCalculate(this.calcMonth.getFullYear(), this.calcMonth.getMonth() + 1, this.cuadrante);
     });
 
-    
+
     this.calcMonth = this.today;
     this.month = this.monthCalculate(this.calcMonth.getFullYear(), this.calcMonth.getMonth() + 1, this.cuadrante);
   }
@@ -57,8 +59,8 @@ export class CalendarComponent implements OnInit, OnDestroy {
   async loadData() {
     await this.calendarService.loadCuadranteList();
     await this.calendarService.loadEventMap();
-    this.cuadrante = this.calendarService.getActiveCuadrante();    
-    this.events = this.calendarService.getEventMap();    
+    this.cuadrante = this.calendarService.getActiveCuadrante();
+    this.events = this.calendarService.getEventMap();
   }
 
   async refreshCalendar(event) {
@@ -76,8 +78,44 @@ export class CalendarComponent implements OnInit, OnDestroy {
       this.selected.selected = "selected";
       this.calendarService.selectedDay = day;
     }
-
   }
+
+  saveApEvent() {
+    let event = new Event();
+    event.type = Event.typeAP;
+    event.turn = this.calendarService.APTurn;
+    this.saveEvent(event);
+  }
+
+  saveBajaEvent() {
+    let event = new Event();
+    event.type = Event.typeBaja;
+    event.turn = this.calendarService.bajaTurn;
+    this.saveEvent(event);
+  }
+
+  saveVacationEvent() {
+    let event = new Event();
+    event.type = Event.typeVacaciones;
+    event.turn = this.calendarService.vacacionesTurn;
+    this.saveEvent(event);
+  }
+
+  saveFiestaEvent() {
+    let event = new Event();
+    event.type = Event.typeFiesta;
+    event.turn = this.calendarService.fiestaTurn;
+    this.saveEvent(event);
+  }
+
+  saveEvent(event){
+    event.day = this.selected.day;
+    event.title = event.turn.description;
+    event.startTime = event.turn.startTime;
+    event.finalTime = event.turn.finalTime;
+    this.calendarService.saveEvent(event);
+  }
+
 
   nextMonth() {
     this.calcMonth = new Date(this.calcMonth.getFullYear(), this.calcMonth.getMonth() + 1, 1);
@@ -91,9 +129,14 @@ export class CalendarComponent implements OnInit, OnDestroy {
   }
 
   newEvent() {
+    let event = new Event();
+    event.day = this.selected.day;
+    event.type = this.eventType;
+    this.calendarService.setEditEvent(event);
+    this.eventType = null;
     this.navCtrl.navigateForward('/add-event');
   }
-  editEvent(editEvent){
+  editEvent(editEvent) {
     this.calendarService.setEditEvent(editEvent);
     this.navCtrl.navigateForward('/add-event');
   }
@@ -119,7 +162,7 @@ export class CalendarComponent implements OnInit, OnDestroy {
     var k = 0;
     for (let i = 0; i < 42; i++) {
       monthDays[j][k] = new CalendarDay(new Date(firstDayOfWeek.getFullYear(), firstDayOfWeek.getMonth(), firstDayOfWeek.getDate() + i));
-      
+
       if (
         monthDays[j][k].day.getFullYear() == this.today.getFullYear() &&
         monthDays[j][k].day.getMonth() == this.today.getMonth() &&
@@ -138,13 +181,13 @@ export class CalendarComponent implements OnInit, OnDestroy {
         monthDays[j][k].turn = turnDays[i].turn;
       }
 
-      const dayEvent = new Date(monthDays[j][k].day.getFullYear(),monthDays[j][k].day.getMonth(),monthDays[j][k].day.getDate()).toString();
+      const dayEvent = new Date(monthDays[j][k].day.getFullYear(), monthDays[j][k].day.getMonth(), monthDays[j][k].day.getDate()).toString();
       monthDays[j][k].events = this.events.get(dayEvent);
-      if(monthDays[j][k].events == null){
+      if (monthDays[j][k].events == null) {
         monthDays[j][k].events = new Array<Event>();
-      }else{
-        for(let event of monthDays[j][k].events){
-          if(event.turn != null){
+      } else {
+        for (let event of monthDays[j][k].events) {
+          if (event.turn != null) {
             monthDays[j][k].turn = event.turn;
           }
         }

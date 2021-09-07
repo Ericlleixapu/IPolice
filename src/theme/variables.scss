@@ -20,6 +20,13 @@
     .dark-theme .searchBar{
       background-color: #1e1e1e;
     }
+    
+    .dots-menu::part(icon) {
+      display: none;
+    }
+    .dots-menu::part(text) {
+      display: none;
+    }
 
 /** Ionic CSS Variables **/
 :root {

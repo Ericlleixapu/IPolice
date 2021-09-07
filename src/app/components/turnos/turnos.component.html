@@ -20,19 +20,21 @@
 
   <ion-list *ngIf="!isNew">
 
-    <ion-item-sliding *ngFor="let turn of turns">
-      <ion-item>
-        <ion-text>{{turn.title}} - de {{turn.startTime}} a {{turn.finalTime}}</ion-text>
-        <ion-chip slot="end" style="width: 4em;" [ngStyle]="{'background-color': turn.color}">
-          <ion-label style="width: 4em;text-align: center;"></ion-label>
-        </ion-chip>
-      </ion-item>
-      <ion-item-options side="end">
-        <ion-item-option color="danger" (click)="clickDelete(turn)">
-          <ion-icon name="trash" size="large"></ion-icon>
-        </ion-item-option>
-      </ion-item-options>
-    </ion-item-sliding>
+    <ng-container *ngFor="let turn of turns">
+      <ion-item-sliding *ngIf="!turn.isHidden">
+        <ion-item>
+          <ion-text>{{turn.title}} - de {{turn.startTime}} a {{turn.finalTime}}</ion-text>
+          <ion-chip slot="end" style="width: 4em;" [ngStyle]="{'background-color': turn.color}">
+            <ion-label style="width: 4em;text-align: center;"></ion-label>
+          </ion-chip>
+        </ion-item>
+        <ion-item-options side="end">
+          <ion-item-option color="danger" (click)="clickDelete(turn)">
+            <ion-icon name="trash" size="large"></ion-icon>
+          </ion-item-option>
+        </ion-item-options>
+      </ion-item-sliding>
+    </ng-container>
 
   </ion-list>
 

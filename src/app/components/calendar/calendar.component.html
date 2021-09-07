@@ -4,6 +4,16 @@
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
     <ion-title>Calendario</ion-title>
+    <!-- <ion-buttons slot="end">
+      <ion-icon name="ellipsis-horizontal-outline"></ion-icon>
+      <ion-select class="dots-menu" [(ngModel)]="eventType" (ionChange)="newEvent()" interface="popover">
+        <ion-select-option value="event">Añadir Evento</ion-select-option>
+        <ion-select-option value="juicio">Añadir Juicio</ion-select-option>
+        <ion-select-option value="turn">Añadir Turno Extra</ion-select-option>
+        <ion-select-option value="">Añadir Vacaciones</ion-select-option>
+        <ion-select-option value="">Añadir Detenido</ion-select-option>
+      </ion-select>
+    </ion-buttons> -->
   </ion-toolbar>
 </ion-header>
 
@@ -52,7 +62,7 @@
   </ion-item-sliding>
 
   <ion-list *ngIf="selected">
-    <div *ngIf="selected.turn.title != ''">
+    <div *ngIf="selected.turn.title != '' && !selected.turn.isHidden">
       <ion-item>
         <ion-text>{{selected.turn.description}}</ion-text>
         <ion-text slot="end">{{selected.turn.startTime}} - {{selected.turn.finalTime}}</ion-text>
@@ -92,9 +102,26 @@
   </ion-list>
 
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-    <ion-fab-button (click)="newEvent();">
+    <ion-fab-button>
       <ion-icon name="add"></ion-icon>
     </ion-fab-button>
+    <ion-fab-list side="top">
+      <ion-fab-button (click)="saveBajaEvent();">
+        Baja
+      </ion-fab-button>
+      <ion-fab-button (click)="saveApEvent();">
+        AP
+      </ion-fab-button>
+      <ion-fab-button (click)="saveVacationEvent();">
+        Vac
+      </ion-fab-button>
+      <ion-fab-button (click)="saveFiestaEvent();">
+        F
+      </ion-fab-button>
+      <ion-fab-button  (click)="newEvent();">
+        <ion-icon name="add"></ion-icon>
+      </ion-fab-button>
+    </ion-fab-list>
   </ion-fab>
 
 </ion-content>

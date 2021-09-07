@@ -12,31 +12,37 @@ import { CalendarService } from 'src/app/services/calendar.service';
 })
 export class AddEventPage implements OnInit {
 
+  public typeEvent = Event.typeEvent;
+  public typeJuicio = Event.typeJuicio;
+  public typeExtra = Event.typeExtra;
+  public typeFiesta = Event.typeFiesta;
+  public typeAP = Event.typeAP;
+  public typeVacaciones = Event.typeVacaciones;
+  public typeBaja = Event.typeBaja;
+
   public event: Event;
   public selectedDay: CalendarDay;
   public turns: Array<Turn>;
   public turn: Turn = new Turn();
   public isNew: boolean = false;
-  public formOk:boolean = false;
-  public fecha:string;
+  public formOk: boolean = false;
+  public fecha: string;
 
   constructor(
     private navCtrl: NavController,
     public calendarService: CalendarService
-  ) {     
+  ) {
   }
 
   ngOnInit() {
     this.turns = this.calendarService.getTurnList();
     this.selectedDay = this.calendarService.selectedDay;
     this.event = this.calendarService.getEditEvent();
-    if (this.event == null) {
+    if (this.event.title == "") {
       this.isNew = true;
-      this.event = new Event();
-      this.event.day = new Date(this.selectedDay.day.getUTCFullYear(), this.selectedDay.day.getMonth(), this.selectedDay.day.getDate());
-    }    
-    this.event.day.toISOString();
+    }
     this.formControl();
+    this.fecha = this.event.day.toISOString();
   }
 
   getBack() {
@@ -46,11 +52,14 @@ export class AddEventPage implements OnInit {
     if (this.event.title == "") {
       this.event.title = "Nuevo Evento";
     }
-    this.calendarService.saveEvent(this.event);
-    if (this.event.type == "turn") {
+
+    if (this.event.turn != null) {
+      this.event.title = this.event.turn.description;
       this.event.startTime = this.event.turn.startTime;
       this.event.finalTime = this.event.turn.finalTime;
     }
+    
+    this.calendarService.saveEvent(this.event);
     this.getBack();
   }
   deleteEvent() {
@@ -61,10 +70,35 @@ export class AddEventPage implements OnInit {
     this.calendarService.updateEvent();
     this.getBack();
   }
-  formControl(){
+  formControl() {
     this.formOk = true;
-    if(this.event.type == "turn" && this.event.turn == null){
-      this.formOk = false;
+
+    switch (this.event.type) {
+      case Event.typeAP:
+        this.event.turn = this.calendarService.APTurn;
+        break;
+      case Event.typeBaja:
+        this.event.turn = this.calendarService.bajaTurn;
+        break;
+      case Event.typeEvent:
+        this.event.turn = null;
+        break;
+      case Event.typeExtra:
+        if (this.event.turn == null) {
+          this.formOk = false;
+        }
+        break;
+      case Event.typeFiesta:
+        this.event.turn = this.calendarService.fiestaTurn;
+        break;
+      case Event.typeJuicio:
+        this.event.turn = null;
+        break;
+      case Event.typeVacaciones:
+        this.event.turn = this.calendarService.vacacionesTurn;
+        break;
+      default:
+        this.event.turn = null;
     }
   }
 }

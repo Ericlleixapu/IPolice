@@ -6,6 +6,7 @@ export class Turn {
     public startTime: string = "00:00";
     public finalTime: string = "00:00";
     public description:string = "";
+    public isHidden:boolean = false;
 
     constructor(turn?:Turn,days?:number){
 

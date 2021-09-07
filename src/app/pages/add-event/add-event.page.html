@@ -13,47 +13,49 @@
 <ion-content padding>
 
   <ion-card>
-    <ion-card-header>
-      <ion-card-title>
-        <ion-item>
-          <ion-label position="floating">Fecha</ion-label>
-          <ion-datetime [(ngModel)]="fecha" disabled displayFormat="DD MMMM YYYY" min="2005" max="2060">
-          </ion-datetime>
-        </ion-item>
-        <ion-item>
-          <ion-label position="floating">Titulo</ion-label>
-          <ion-input [(ngModel)]="event.title"></ion-input>
-        </ion-item>
-
-      </ion-card-title>
-    </ion-card-header>
-
     <ion-card-content>
 
       <ion-item>
-        <ion-label position="floating">Descripción</ion-label>
-        <ion-textarea [(ngModel)]="event.description" rows="6" cols="20"></ion-textarea>
+        <ion-label position="floating">Fecha</ion-label>
+        <ion-datetime [(ngModel)]="fecha" disabled displayFormat="DD MMMM YYYY" min="2005" max="2060">
+        </ion-datetime>
       </ion-item>
 
       <ion-item>
         <ion-label>Tipo</ion-label>
         <ion-select (ionChange)="formControl()" [(ngModel)]="event.type" interface="popover">
-          <ion-select-option value="event">Evento</ion-select-option>
-          <ion-select-option value="juicio">Juicio</ion-select-option>
-          <ion-select-option value="turn">Turno extra</ion-select-option>
+          <ion-select-option [value]="typeEvent">Evento</ion-select-option>
+          <ion-select-option [value]="typeJuicio">Juicio</ion-select-option>
+          <ion-select-option [value]="typeExtra">Horas extra</ion-select-option>
+          <ion-select-option [value]="typeFiesta">Fiesta</ion-select-option>
+          <ion-select-option [value]="typeAP">Asuntos personales</ion-select-option>
+          <ion-select-option [value]="typeVacaciones">Vacaciones</ion-select-option>
+          <ion-select-option [value]="typeBaja">Baja</ion-select-option>
         </ion-select>
       </ion-item>
+      
+      <ion-item *ngIf="event.type == typeJuicio || event.type == typeEvent">
+        <ion-label position="floating">Titulo</ion-label>
+        <ion-input [(ngModel)]="event.title"></ion-input>
+      </ion-item>
 
-      <ion-item *ngIf="event.type == 'turn'">
+      <ion-item *ngIf="event.type == typeJuicio || event.type == typeEvent">
+        <ion-label position="floating" >Descripción</ion-label>
+        <ion-textarea [(ngModel)]="event.description" rows="6" cols="20"></ion-textarea>
+      </ion-item>
+
+      <ion-item *ngIf="event.type == typeExtra">
         <ion-label>Turno: </ion-label>
         <ion-select (ionChange)="formControl()" [(ngModel)]="event.turn" interface="popover"
           placeholder="Escoje un turno">
-          <ion-select-option *ngFor="let turn of turns" [value]="turn">{{turn.title}} {{turn.startTime}} -
+          <ng-container *ngFor="let turn of turns">
+          <ion-select-option *ngIf="!turn.isHidden" [value]="turn">{{turn.title}} {{turn.startTime}} -
             {{turn.finalTime}}</ion-select-option>
+          </ng-container>
         </ion-select>
       </ion-item>
 
-      <ion-item *ngIf="event.type == 'juicio' || event.type == 'event'">
+      <ion-item *ngIf="event.type == typeJuicio || event.type == typeEvent">
         <ion-label  position="floating">Hora inicio</ion-label>
         <ion-datetime [(ngModel)]="event.startTime"
           displayFormat="HH:mm">
@@ -64,7 +66,7 @@
         </ion-datetime>
       </ion-item>
 
-      <ion-item *ngIf="event.type == 'juicio' || event.type == 'turn'">
+      <ion-item *ngIf="event.type == typeJuicio || event.type == typeExtra">
         <ion-label>Pagado</ion-label>
         <ion-checkbox [(ngModel)]="event.payed" color="primary" slot="start"></ion-checkbox>
       </ion-item>

@@ -12,20 +12,24 @@ import { CalendarDay } from '../models/CalendarDay';
 })
 export class CalendarService {
 
-  private activeCuadrante: Cuadrante;
+  public fiestaTurn;
+  public APTurn;
+  public vacacionesTurn;
+  public bajaTurn;
+
   private cuadranteList: Array<Cuadrante>;
   private turnList: Array<Turn>;
   private eventMap: Map<string, Array<Event>>;
   public selectedDay: CalendarDay;
   private editEvent: Event = null;
 
-  public autoRefreshCalendar: Subject<Cuadrante> = new Subject();
+  public autoRefreshCalendar: Subject<boolean> = new Subject();
 
   constructor(private storage: Storage) {
 
   }
 
-  autoRefresh(): Observable<Cuadrante> {
+  autoRefresh(): Observable<boolean> {
     return this.autoRefreshCalendar.asObservable();
   }
   //GESTION DE CUADRANTES
@@ -47,6 +51,8 @@ export class CalendarService {
   }
   updateCuadrante() {
     this.storage.set("cuadrantes", this.cuadranteList);
+
+    this.autoRefreshCalendar.next(true);
   }
   deleteCuadrante(cuadrante) {
     let aux = this.cuadranteList.indexOf(cuadrante);
@@ -54,6 +60,8 @@ export class CalendarService {
       this.cuadranteList.splice(aux, 1);
     }
     this.storage.set("cuadrantes", this.cuadranteList);
+
+    this.autoRefreshCalendar.next(true);
   }
   getActiveCuadrante() {
     if (this.cuadranteList.length > 0) {
@@ -70,14 +78,8 @@ export class CalendarService {
     for (let cuad of this.cuadranteList) {
       cuad.isActive = false;
     }
-
     cuadrante.isActive = isActive;
     this.updateCuadrante();
-    if (isActive) {
-      this.autoRefreshCalendar.next(cuadrante);
-    } else {
-      this.autoRefreshCalendar.next(null);
-    }
 
   }
 
@@ -88,8 +90,23 @@ export class CalendarService {
       this.turnList = [];
     } else {
       this.turnList = data;
+      for (let turn of this.turnList) {
+        if (turn.description == "Fiesta") {
+          this.fiestaTurn = turn;
+        }
+        if (turn.description == "Vacaciones") {
+          this.vacacionesTurn = turn;
+        }
+        if (turn.description == "Asuntos Personales") {
+          this.APTurn = turn;
+        }
+        if (turn.description == "Baja") {
+          this.bajaTurn = turn;
+        }
+      }
     }
   }
+
   saveTurn(turn) {
     this.turnList.push(turn);
     this.storage.set("turns", this.turnList);
@@ -128,12 +145,14 @@ export class CalendarService {
       eventsDay.push(event);
       this.storage.set("events", this.eventMap);
     }
+    this.autoRefreshCalendar.next(true);
   }
   getEventMap() {
     return this.eventMap;
   }
   updateEvent() {
     this.storage.set("events", this.eventMap);
+    this.autoRefreshCalendar.next(true);
   }
   deleteEvent(event: Event) {
     let eventsDay = this.eventMap.get(event.day.toString());
@@ -142,6 +161,7 @@ export class CalendarService {
       eventsDay.splice(aux, 1);
     }
     this.storage.set("events", this.eventMap);
+    this.autoRefreshCalendar.next(true);
   }
   setEditEvent(editEvent) {
     this.editEvent = editEvent;
@@ -154,6 +174,7 @@ export class CalendarService {
 
   //DATOS INICIALES APP
   initialData() {
+
     if (this.turnList.length == 0) {
       var aux = new Turn();
       aux.title = "F";
@@ -162,6 +183,8 @@ export class CalendarService {
       aux.startTime = "00:00";
       aux.finalTime = "23:59";
       this.turnList.push(aux);
+      this.fiestaTurn = aux;
+      this.storage.set("turns", this.turnList);
       aux = new Turn();
       aux.title = "TM";
       aux.color = "paleturquoise";
@@ -188,7 +211,7 @@ export class CalendarService {
       aux.color = "palevioletred";
       aux.description = "Turno de Noche";
       aux.startTime = "22:00";
-      aux.finalTime = "06:0";
+      aux.finalTime = "06:00";
       this.turnList.push(aux);
       aux = new Turn();
       aux.title = "N12";
@@ -199,6 +222,77 @@ export class CalendarService {
       this.turnList.push(aux);
       this.storage.set("turns", this.turnList);
     }
+
+    var fiesta = false;
+    var vacaciones = false;
+    var ap = false;
+    var baja = false;
+
+
+    for(let turno of this.turnList){
+      if(turno.description == "Fiesta"){
+        fiesta = true;
+      }
+      if(turno.description == "Vacaciones"){
+        vacaciones = true;
+      }
+      if(turno.description == "Asuntos Personales"){
+        ap = true;
+      }
+      if(turno.description == "Baja"){
+        baja = true;
+      }
+    }
+    
+    if (!fiesta) {
+      var aux = new Turn();
+      aux.title = "F";
+      aux.color = "Sin Color";
+      aux.description = "Fiesta";
+      aux.startTime = "00:00";
+      aux.finalTime = "23:59";
+      this.turnList.push(aux);
+      this.fiestaTurn = aux;
+      this.storage.set("turns", this.turnList);
+    }
+
+    if (!vacaciones) {
+      var aux = new Turn();
+        aux.title = "V";
+        aux.color = "Sin Color";
+        aux.description = "Vacaciones";
+        aux.startTime = "00:00";
+        aux.finalTime = "23:59";
+        aux.isHidden = true;
+        this.turnList.push(aux);
+        this.vacacionesTurn = aux;
+        this.storage.set("turns", this.turnList);
+      }
+      
+      if (!ap) {
+        var aux = new Turn();
+        aux.title = "AP";
+        aux.color = "Sin Color";
+        aux.description = "Asuntos Personales";
+        aux.startTime = "00:00";
+        aux.finalTime = "23:59";      
+        aux.isHidden = true;
+        this.turnList.push(aux);
+        this.APTurn = aux;
+        this.storage.set("turns", this.turnList);
+      }
+        if (!baja) {
+        aux = new Turn();
+        aux.title = "B";
+        aux.color = "Sin Color";
+        aux.description = "Baja";
+        aux.startTime = "00:00";
+        aux.finalTime = "23:59";
+        aux.isHidden = true;
+        this.turnList.push(aux);
+        this.bajaTurn = aux;
+        this.storage.set("turns", this.turnList);
+      }
 
     if (this.cuadranteList.length == 0) {
       var turns = [];
