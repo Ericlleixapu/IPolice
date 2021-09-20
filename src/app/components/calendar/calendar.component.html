@@ -4,16 +4,11 @@
       <ion-menu-button></ion-menu-button>
     </ion-buttons>
     <ion-title>Calendario</ion-title>
-    <!-- <ion-buttons slot="end">
-      <ion-icon name="ellipsis-horizontal-outline"></ion-icon>
-      <ion-select class="dots-menu" [(ngModel)]="eventType" (ionChange)="newEvent()" interface="popover">
-        <ion-select-option value="event">Añadir Evento</ion-select-option>
-        <ion-select-option value="juicio">Añadir Juicio</ion-select-option>
-        <ion-select-option value="turn">Añadir Turno Extra</ion-select-option>
-        <ion-select-option value="">Añadir Vacaciones</ion-select-option>
-        <ion-select-option value="">Añadir Detenido</ion-select-option>
-      </ion-select>
-    </ion-buttons> -->
+    <ion-buttons slot="end">
+      <ion-button (click)="newEvent();">
+        <ion-icon name="add"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
@@ -72,7 +67,7 @@
       <ion-list-header>Eventos</ion-list-header>
 
       <ion-item-sliding *ngFor="let event of selected.events">
-        <ion-item-options side="start">          
+        <ion-item-options side="start">
           <ion-item-option color="danger" (click)="deleteEvent(event)">
             <ion-icon name="trash" size="large"></ion-icon>
           </ion-item-option>
@@ -80,18 +75,18 @@
             <ion-icon name="pencil" size="large"></ion-icon>
           </ion-item-option>
         </ion-item-options>
-      <ion-item>
-        <ion-label>{{event.title}}</ion-label>
-        <ion-text slot="end">{{event.startTime}} - {{event.finalTime}}</ion-text>
-      </ion-item>
-      <ion-item-options side="end">
-        <ion-item-option color="primary" (click)="editEvent(event)">
-          <ion-icon name="pencil" size="large"></ion-icon>
-        </ion-item-option>
-        <ion-item-option color="danger" (click)="deleteEvent(event)">
-          <ion-icon name="trash" size="large"></ion-icon>
-        </ion-item-option>
-      </ion-item-options>
+        <ion-item>
+          <ion-label>{{event.title}}</ion-label>
+          <ion-text slot="end">{{event.startTime}} - {{event.finalTime}}</ion-text>
+        </ion-item>
+        <ion-item-options side="end">
+          <ion-item-option color="primary" (click)="editEvent(event)">
+            <ion-icon name="pencil" size="large"></ion-icon>
+          </ion-item-option>
+          <ion-item-option color="danger" (click)="deleteEvent(event)">
+            <ion-icon name="trash" size="large"></ion-icon>
+          </ion-item-option>
+        </ion-item-options>
       </ion-item-sliding>
 
 
@@ -118,7 +113,7 @@
       <ion-fab-button (click)="saveFiestaEvent();">
         F
       </ion-fab-button>
-      <ion-fab-button  (click)="newEvent();">
+      <ion-fab-button (click)="newEvent();">
         <ion-icon name="add"></ion-icon>
       </ion-fab-button>
     </ion-fab-list>

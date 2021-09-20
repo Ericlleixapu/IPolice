@@ -134,6 +134,7 @@ export class CalendarService {
       this.eventMap = data;
     }
   }
+  
   saveEvent(event: Event) {
     let eventsDay = this.eventMap.get(event.day.toString());
     if (eventsDay == null) {
